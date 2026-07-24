@@ -1,0 +1,19 @@
+---@meta
+
+rideable_api = {}
+
+---@class rideable_api
+--- Mounts a player on an entity or seat.
+--- If the player is already mounted, they will be unmounted first.
+--- Triggers the "rideable_api:on_mount" event.
+---@field mount fun(pid: integer, entity_uid: integer|nil, seat_id: any|nil, on_unmount: fun(pid: integer, entity_uid: integer|nil, seat_id: any|nil)|nil): boolean
+--- Unmounts a player.
+--- Triggers the unmount_callback and emits the "rideable_api:on_unmount" event.
+---@field unmount fun(pid: integer): boolean
+--- Checks if a player is currently mounted.
+---@field is_mounted fun(pid: integer): boolean
+--- Returns the mount data for a player.
+--- Returns: `{ entity_uid = ..., seat_id = ... }` or `nil`.
+---@field get_mount_data fun(pid: integer): table|nil
+--- Returns the entity UID that a player is mounted on (if any).
+---@field get_mount_entity fun(pid: integer): integer|nil

@@ -1,0 +1,10 @@
+{
+  "id": "vehicle_api",
+  "title": "Vehicle API",
+  "version": "0.1.0",
+  "creator": "Neveix",
+  "description": "",
+  "dependencies": [
+    "rideable_api"
+  ]
+}
