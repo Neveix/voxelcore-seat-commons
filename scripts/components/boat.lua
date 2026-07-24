@@ -20,11 +20,11 @@ local water_id = block.index("base:water")
 
 local GRAVITY = ARGS.gravity or 1
 local MAX_SPEED = ARGS.max_speed or 7
-local ROTATION_ACCELERATION = ARGS.rotation_acceleration
+local ROTATION_ACCELERATION = ARGS.rotation_acceleration or 0.02
 local ROTATION_DECELERATION = ARGS.rotation_deceleration or 0.003
-local MAX_ROTATION_SPEED = ARGS.max_rotation_speed or 1 -- degrees
-local MAX_GROUND_ROTATION_SPEED = ARGS.max_ground_rotation_speed or 0.2 -- degrees
-local TURN_VELOCITY_DEPENDENCY = ARGS.turn_velocity_dependency -- 0 means zero dependency on velocity to rotate.
+local MAX_ROTATION_SPEED = ARGS.max_rotation_speed or 1
+local MAX_GROUND_ROTATION_SPEED = ARGS.max_ground_rotation_speed or 0.2
+local TURN_VELOCITY_DEPENDENCY = ARGS.turn_velocity_dependency or 0 -- 0 means zero dependency on velocity to rotate.
 local ROLL_SPEED = ARGS.roll_speed or 0.1
 local MAX_ROLL = ARGS.max_roll or 0
 local ROLL_LIFT = ARGS.roll_lift or 0 -- in blocks
@@ -32,8 +32,9 @@ local BOTTOM_Y_SHIFT = ARGS.bottom_y_shift or 0
 local ACCELERATION = ARGS.acceleration or 0.04
 local WATER_SPLASHES_NUMBER = ARGS.water_splashes_number or 3
 local WATER_SPLASHES_WIDTH = ARGS.water_splashes_width or 1
-local INVENTORY_SIZE = ARGS.inventory_size
-local LAYOUT_ID = ARGS.layout_id
+local INVENTORY_SIZE = ARGS.inventory_size or 0
+---@type string|nil
+local LAYOUT_ID = ARGS.layout_id or nil
 local PLAYER_POS_SHIFT = ARGS.player_pos_shift or { 0, 0.8, 0 }
 
 local tsf = entity.transform
@@ -169,7 +170,7 @@ do
 end
 
 local function open_inventory()
-	if INVENTORY_SIZE == 0 then
+	if INVENTORY_SIZE == 0 or LAYOUT_ID == nil then
 		return
 	end
 	hud.open(LAYOUT_ID, false, SAVED_DATA.inventory_id)
