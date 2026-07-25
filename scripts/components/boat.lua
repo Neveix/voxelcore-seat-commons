@@ -1,4 +1,4 @@
-local boat_comp = require("components/boat")
+local boat_comp = require("vehicle_api:components/boat")
 local self = boat_comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()

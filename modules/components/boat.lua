@@ -18,6 +18,8 @@ local M = {}
 local C = {}
 ---@diagnostic enable: missing-fields
 
+M.C = C
+
 ---@param entity voxelcore.class.entity
 function get_entity_default_params(entity)
 	local ename = entity:def_name()
@@ -31,7 +33,7 @@ end
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param default_params table
-local function new_param_initializer(SAVED_DATA, ARGS, default_params)
+function M.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	---@param name string
 	---@return any
 	function init_func(name)
@@ -45,9 +47,9 @@ end
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
-local function calc_params(entity, SAVED_DATA, ARGS)
+function M.calc_params(entity, SAVED_DATA, ARGS)
 	local default_params = get_entity_default_params(entity)
-	local piniter = new_param_initializer(SAVED_DATA, ARGS, default_params)
+	local piniter = M.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
 	p.gravity = piniter("gravity") or 1
 	p.max_speed = piniter("max_speed") or 7
@@ -82,7 +84,7 @@ function M.new(entity, SAVED_DATA, ARGS)
 	c.rig = entity.skeleton
 	c.saved_data = SAVED_DATA
 	c.args = ARGS
-	c.p = calc_params(entity, SAVED_DATA, ARGS)
+	c.p = M.calc_params(entity, SAVED_DATA, ARGS)
 	return c
 end
 
@@ -160,7 +162,7 @@ local function on_spawn_handle_rot(self)
 end
 
 ---@param self BoatComp
-function on_spawn_handle_inventory(self)
+local function on_spawn_handle_inventory(self)
 	local invid = inventory.create(self.p.inventory_size)
 	self.saved_data.inventory_id = invid
 	if self.saved_data.inventory_data then
@@ -169,29 +171,26 @@ function on_spawn_handle_inventory(self)
 end
 
 ---@param self BoatComp
-function on_spawn_handle_rider(self)
+local function on_spawn_handle_rider(self)
 	local pid = self.saved_data.rider_id
 	if pid then
 		self.saved_data.rider_id = nil
-		player_mount(pid)
+		self:player_mount(pid)
 	end
 end
 
 ---------
 
----@param self BoatComp
 function C.on_spawn(self)
 	on_spawn_handle_rot(self)
 	on_spawn_handle_inventory(self)
 	on_spawn_handle_rider(self)
 end
 
----@param self BoatComp
 function C.on_save(self)
 	self.saved_data.inventory_data = get_full_inventory_data(self)
 end
 
----@param self BoatComp
 function C.on_despawn(self)
 	local invid = self.saved_data.inventory_id
 	self.saved_data.inventory_id = nil
@@ -201,7 +200,6 @@ end
 
 ------------------------------ MOUSE EVENTS -----------------------------------
 
----@param self BoatComp
 function C.open_inventory(self)
 	if self.p.inventory_size == 0 or self.p.layout_id == nil then
 		return
@@ -211,7 +209,6 @@ end
 
 --------
 
----@param self BoatComp
 function C.on_attacked(self, _, pid)
 	if self.saved_data.rider_id ~= nil then
 		return
@@ -231,19 +228,16 @@ function C.on_attacked(self, _, pid)
 	self.entity:despawn()
 end
 
----@param self BoatComp
----@param pid integer
 function C.on_used(self, pid)
 	if input.is_active("movement.crouch") then
-		self.open_inventory(self)
+		self:open_inventory()
 	else
-		self.player_mount(self, pid)
+		self:player_mount(pid)
 	end
 end
 
 ------------------------------ MOUNT / UNMOUNT --------------------------------
 
----@param self BoatComp
 function C.player_unmount(self)
 	local x, y, z = player.get_pos(self.saved_data.rider_id)
 	player.set_pos(self.saved_data.rider_id, x, y + 0.5, z)
@@ -252,15 +246,13 @@ function C.player_unmount(self)
 	self.saved_data.rider_id = nil
 end
 
----@param self BoatComp
----@param pid integer
 function C.player_mount(self, pid)
 	if self.saved_data.rider_id == pid then
 		return
 	end
 	rideable_api.unmount(pid)
 	rideable_api.mount(pid, self.entity:get_uid(), nil, function()
-		self.player_unmount(self)
+		self:player_unmount()
 	end)
 	self.saved_data.player_had_noclip_before_mount = player.is_noclip(pid)
 	player.set_noclip(pid, true)
@@ -269,20 +261,18 @@ end
 
 ------------------------------ KEYBOARD EVENTS --------------------------------
 
----@param self BoatComp
 function C.check_unmount(self)
 	if not self.saved_data.rider_id then
 		return
 	end
 	if input.is_active("movement.crouch") then
-		self.player_unmount(self)
+		self:player_unmount()
 		return
 	end
 end
 
 ------------------------------ PERIODICAL EVENTS ------------------------------
 
----@param self BoatComp
 function C.tp_player(self)
 	if self.saved_data.rider_id == nil then
 		return
