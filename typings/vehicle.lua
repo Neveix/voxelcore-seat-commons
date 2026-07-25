@@ -1,0 +1,45 @@
+---@meta
+
+---@class BoatParams
+---@field gravity number
+---@field max_speed number
+---@field rotation_acceleration number
+---@field rotation_deceleration number
+---@field max_rotation_speed number
+---@field max_ground_rotation_speed number
+---@field turn_velocity_dependency number
+---@field roll_speed number
+---@field max_roll number
+---@field roll_lift number
+---@field bottom_y_shift number
+---@field acceleration number
+---@field water_splashes_number integer
+---@field water_splashes_width number
+---@field inventory_size integer
+---@field layout_id string|nil
+---@field player_pos_shift number[]
+
+---@class BoatComp
+---@field entity voxelcore.class.entity
+---@field tsf voxelcore.class.entity.transform
+---@field body voxelcore.class.entity.rigidbody
+---@field rig voxelcore.class.entity.skeleton
+---@field saved_data table
+---@field args table
+---@field p BoatParams
+---@field on_spawn fun(self: BoatComp)
+---@field on_save fun(self: BoatComp)
+---@field on_despawn fun(self: BoatComp)
+---@field on_attacked fun(self: BoatComp, entity_id: integer, pid: integer)
+---@field player_unmount fun(self: BoatComp)
+---@field player_mount fun(self: BoatComp, pid: integer)
+---@field open_inventory fun(self: BoatComp)
+---@field on_used fun(self: BoatComp, pid: integer)
+---@field check_unmount fun(self: BoatComp)
+---@field tp_player fun(self: BoatComp)
+---@field move fun(self: BoatComp)
+---@field spawn_move_water_splashes fun(self: BoatComp)
+---@field spawn_fall_water_splashes fun(self: BoatComp)
+---@field handle_water_behaviour fun(self: BoatComp)
+---@field on_update fun(self: BoatComp, tps: number)
+---@field on_render fun(self: BoatComp, delta: number)
