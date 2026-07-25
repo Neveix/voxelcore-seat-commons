@@ -20,14 +20,21 @@ local C = {}
 
 M.C = C
 
----@param entity voxelcore.class.entity
-function get_entity_default_params(entity)
-	local ename = entity:def_name()
-	local sep_index, _, _ = string.find(ename, ":")
+---@param c BoatComp
+---@return table functions, table params
+function get_entity_defaults(c)
+	local ename = c.entity:def_name()
+	local sep_index = string.find(ename, ":")
 
 	-- pack_id:boat/entity_name
-	local mod = string.sub(ename, 0, sep_index) .. "vehicle_api/boat/" .. string.sub(ename, sep_index + 1)
-	return require(mod).get()
+	local defaults = require(string.sub(ename, 1, sep_index) .. "vehicle_api/boat/" .. string.sub(ename, sep_index + 1))
+	if type(defaults) == "table" then
+		return {}, defaults
+	elseif type(defaults) == "function" then
+		defaults = defaults(c)
+		return defaults, defaults.params or {}
+	end
+	return {}, {}
 end
 
 ---@param SAVED_DATA table
@@ -44,11 +51,10 @@ function M.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	return init_func
 end
 
----@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
-function M.calc_params(entity, SAVED_DATA, ARGS)
-	local default_params = get_entity_default_params(entity)
+---@param default_params table
+function M.calc_params(SAVED_DATA, ARGS, default_params)
 	local piniter = M.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
 	p.gravity = piniter("gravity") or 1
@@ -72,6 +78,37 @@ function M.calc_params(entity, SAVED_DATA, ARGS)
 	return p
 end
 
+M.APPLY_OVERRIDE_FOR = {
+	"on_spawn",
+	"on_save",
+	"on_despawn",
+	"on_attacked",
+	"player_unmount",
+	"player_mount",
+	"open_inventory",
+	"on_used",
+	"check_unmount",
+	"tp_player",
+	"move",
+	"spawn_move_water_splashes",
+	"spawn_fall_water_splashes",
+	"handle_water_behaviour",
+	"on_update",
+	"on_render",
+}
+---@param c BoatComp
+---@param SAVED_DATA table
+---@param ARGS table
+---@param defaults table
+function M.override_functions(c, SAVED_DATA, ARGS, defaults)
+	for _, fname in ipairs(M.APPLY_OVERRIDE_FOR) do
+		c[fname] = SAVED_DATA[fname] or ARGS[fname] or defaults[fname] or c[fname]
+		if c[fname] == nil then
+			debug.error("function " .. fname .. " not found for entity " .. c.entity:def_name())
+		end
+	end
+end
+
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
@@ -84,7 +121,9 @@ function M.new(entity, SAVED_DATA, ARGS)
 	c.rig = entity.skeleton
 	c.saved_data = SAVED_DATA
 	c.args = ARGS
-	c.p = M.calc_params(entity, SAVED_DATA, ARGS)
+	local def_funcs, def_params = get_entity_defaults(c)
+	M.override_functions(c, SAVED_DATA, ARGS, def_funcs)
+	c.p = M.calc_params(SAVED_DATA, ARGS, def_params)
 	return c
 end
 

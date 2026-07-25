@@ -49,9 +49,9 @@ The component `boat.lua` simply calls functions from this module.
 
 ## Table of Contents
 
-1. [Creating a Standard Boat with Custom Parameters](./01-creating-a-standard-boat.md)
-2. [Custom Boat Script](./02-custom-boat-script.md)
-3. [Overriding Default VehicleAPI Scripts Globally](./03-overriding-default-scripts.md)
+1. [Creating a Standard Boat with Custom Parameters](./01-creating-a-vehicle.md)
+2. [Custom Boat Script](./02-custom-vehicle-component.md)
+3. [Overriding Functions Globally](./03-overriding-globally.md)
 
 ---
 
