@@ -19,7 +19,7 @@ function M.calc_params(SAVED_DATA, ARGS, default_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
 	p.player_pos_shift = piniter("player_pos_shift") or { 0, 1.5, 0 }
-	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0, 2.5, 0 }
+	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0, 2, 0 }
 	return p
 end
 
@@ -41,17 +41,14 @@ function comp.player_unmount(self)
 	local pos = self.tsf:get_pos()
 	pos = vec3.add(pos, self.p.player_pos_shift_after_unmount)
 	player.set_pos(self.saved_data.rider_id, pos[1], pos[2], pos[3])
-	player.set_noclip(self.saved_data.rider_id, self.saved_data.player_had_noclip_before_mount)
 	self.entity:despawn()
 end
 
 function comp.player_mount(self)
 	local rider_id = self.saved_data.rider_id
-	self.saved_data.player_had_noclip_before_mount = player.is_noclip(rider_id)
 	rideable_api.mount(rider_id, self.entity:get_uid(), nil, function()
 		self:player_unmount()
 	end)
-	-- player.set_noclip(rider_id, true)
 end
 
 ------
