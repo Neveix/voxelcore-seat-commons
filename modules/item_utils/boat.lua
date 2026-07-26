@@ -73,12 +73,4 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 	return true, pos
 end
 
-function M.get_boat_rotation_mat4(pid)
-	local rx, _, _ = player.get_rot(pid, false)
-	rx = rx + 90
-	rx = math.round(rx / 45) * 45
-	local rot = mat4.rotate({ 0, 1, 0 }, rx)
-	return rot
-end
-
 return M

@@ -1,6 +1,8 @@
 ---@meta
 
----@class BoatParams
+---@class CompParams
+
+---@class BoatCompParams : CompParams
 ---@field gravity number
 ---@field max_speed number
 ---@field rotation_acceleration number
@@ -17,29 +19,43 @@
 ---@field water_splashes_width number
 ---@field inventory_size integer
 ---@field layout_id string|nil
----@field player_pos_shift number[]
+---@field player_pos_shift vec3
 
----@class BoatComp
+---@class SeatCompParams: CompParams
+---@field player_pos_shift vec3
+---@field player_pos_shift_after_unmount vec3
+
+---@class Comp
 ---@field entity voxelcore.class.entity
 ---@field tsf voxelcore.class.entity.transform
 ---@field body voxelcore.class.entity.rigidbody
 ---@field rig voxelcore.class.entity.skeleton
 ---@field saved_data table
 ---@field args table
----@field p BoatParams
----@field on_spawn fun(self: BoatComp)
----@field on_save fun(self: BoatComp)
----@field on_despawn fun(self: BoatComp)
----@field on_attacked fun(self: BoatComp, entity_id: integer, pid: integer)
+---@field p CompParams
+---@field on_spawn fun(self: Comp)
+---@field on_save fun(self: Comp)
+---@field on_despawn fun(self: Comp)
+---@field on_attacked fun(self: Comp, entity_id: integer, pid: integer)
+---@field on_used fun(self: Comp, pid: integer)
+---@field on_update fun(self: Comp, tps: number)
+---@field on_render fun(self: Comp, delta: number)
+
+---@class BoatComp : Comp
+---@field p BoatCompParams
 ---@field player_unmount fun(self: BoatComp)
 ---@field player_mount fun(self: BoatComp, pid: integer)
 ---@field open_inventory fun(self: BoatComp)
----@field on_used fun(self: BoatComp, pid: integer)
 ---@field check_unmount fun(self: BoatComp)
 ---@field tp_player fun(self: BoatComp)
 ---@field move fun(self: BoatComp)
 ---@field spawn_move_water_splashes fun(self: BoatComp)
 ---@field spawn_fall_water_splashes fun(self: BoatComp)
 ---@field handle_water_behaviour fun(self: BoatComp)
----@field on_update fun(self: BoatComp, tps: number)
----@field on_render fun(self: BoatComp, delta: number)
+
+---@class SeatComp : Comp
+---@field p SeatCompParams
+---@field player_unmount fun(self: SeatComp)
+---@field player_mount fun(self: SeatComp, pid: integer)
+---@field tp_player fun(self: SeatComp)
+---@field check_unmount fun(self: SeatComp)

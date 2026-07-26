@@ -1,61 +1,22 @@
 ---@type rideable_api
 local rideable_api = require("rideable_api:mount")
-
-function math.sign(x)
-	if x > 0 then
-		return 1
-	elseif x < 0 then
-		return -1
-	else
-		return 0
-	end
-end
+require("utils")
+local common_comp = require("components/common")
 
 local M = {}
 
 ---@diagnostic disable: missing-fields
 ---@type BoatComp
-local C = {}
+local comp = {}
 ---@diagnostic enable: missing-fields
 
-M.C = C
-
----@param c BoatComp
----@return table functions, table params
-function get_entity_defaults(c)
-	local ename = c.entity:def_name()
-	local sep_index = string.find(ename, ":")
-
-	-- pack_id:boat/entity_name
-	local defaults = require(string.sub(ename, 1, sep_index) .. "vehicle_api/boat/" .. string.sub(ename, sep_index + 1))
-	if type(defaults) == "table" then
-		return {}, defaults
-	elseif type(defaults) == "function" then
-		defaults = defaults(c)
-		return defaults, defaults.params or {}
-	end
-	return {}, {}
-end
-
----@param SAVED_DATA table
----@param ARGS table
----@param default_params table
-function M.new_param_initializer(SAVED_DATA, ARGS, default_params)
-	---@param name string
-	---@return any
-	function init_func(name)
-		local res = SAVED_DATA[name] or ARGS[name] or default_params[name]
-		SAVED_DATA[name] = res
-		return res
-	end
-	return init_func
-end
+M.comp = comp
 
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param default_params table
 function M.calc_params(SAVED_DATA, ARGS, default_params)
-	local piniter = M.new_param_initializer(SAVED_DATA, ARGS, default_params)
+	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
 	p.gravity = piniter("gravity") or 1
 	p.max_speed = piniter("max_speed") or 7
@@ -78,53 +39,16 @@ function M.calc_params(SAVED_DATA, ARGS, default_params)
 	return p
 end
 
-M.APPLY_OVERRIDE_FOR = {
-	"on_spawn",
-	"on_save",
-	"on_despawn",
-	"on_attacked",
-	"player_unmount",
-	"player_mount",
-	"open_inventory",
-	"on_used",
-	"check_unmount",
-	"tp_player",
-	"move",
-	"spawn_move_water_splashes",
-	"spawn_fall_water_splashes",
-	"handle_water_behaviour",
-	"on_update",
-	"on_render",
-}
----@param c BoatComp
----@param SAVED_DATA table
----@param ARGS table
----@param defaults table
-function M.override_functions(c, SAVED_DATA, ARGS, defaults)
-	for _, fname in ipairs(M.APPLY_OVERRIDE_FOR) do
-		c[fname] = SAVED_DATA[fname] or ARGS[fname] or defaults[fname] or c[fname]
-		if c[fname] == nil then
-			debug.error("function " .. fname .. " not found for entity " .. c.entity:def_name())
-		end
-	end
-end
-
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@return BoatComp
 function M.new(entity, SAVED_DATA, ARGS)
-	local c = table.copy(C)
-	c.entity = entity
-	c.tsf = entity.transform
-	c.body = entity.rigidbody
-	c.rig = entity.skeleton
-	c.saved_data = SAVED_DATA
-	c.args = ARGS
-	local def_funcs, def_params = get_entity_defaults(c)
-	M.override_functions(c, SAVED_DATA, ARGS, def_funcs)
-	c.p = M.calc_params(SAVED_DATA, ARGS, def_params)
-	return c
+	local component_name = "boat"
+	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
+	local _, def_params = common_comp.get_entity_defaults(new_comp, component_name)
+	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	return new_comp
 end
 
 ------------------------------ SAVE / SPAWN / DESPAWN -------------------------
@@ -220,17 +144,17 @@ end
 
 ---------
 
-function C.on_spawn(self)
+function comp.on_spawn(self)
 	on_spawn_handle_rot(self)
 	on_spawn_handle_inventory(self)
 	on_spawn_handle_rider(self)
 end
 
-function C.on_save(self)
+function comp.on_save(self)
 	self.saved_data.inventory_data = get_full_inventory_data(self)
 end
 
-function C.on_despawn(self)
+function comp.on_despawn(self)
 	local invid = self.saved_data.inventory_id
 	self.saved_data.inventory_id = nil
 	inventory.remove(invid)
@@ -239,7 +163,7 @@ end
 
 ------------------------------ MOUSE EVENTS -----------------------------------
 
-function C.open_inventory(self)
+function comp.open_inventory(self)
 	if self.p.inventory_size == 0 or self.p.layout_id == nil then
 		return
 	end
@@ -248,7 +172,7 @@ end
 
 --------
 
-function C.on_attacked(self, _, pid)
+function comp.on_attacked(self, _, pid)
 	if self.saved_data.rider_id ~= nil then
 		return
 	end
@@ -267,7 +191,7 @@ function C.on_attacked(self, _, pid)
 	self.entity:despawn()
 end
 
-function C.on_used(self, pid)
+function comp.on_used(self, pid)
 	if input.is_active("movement.crouch") then
 		self:open_inventory()
 	else
@@ -277,7 +201,7 @@ end
 
 ------------------------------ MOUNT / UNMOUNT --------------------------------
 
-function C.player_unmount(self)
+function comp.player_unmount(self)
 	local x, y, z = player.get_pos(self.saved_data.rider_id)
 	player.set_pos(self.saved_data.rider_id, x, y + 0.5, z)
 	player.set_noclip(self.saved_data.rider_id, self.saved_data.player_had_noclip_before_mount)
@@ -285,7 +209,7 @@ function C.player_unmount(self)
 	self.saved_data.rider_id = nil
 end
 
-function C.player_mount(self, pid)
+function comp.player_mount(self, pid)
 	if self.saved_data.rider_id == pid then
 		return
 	end
@@ -299,7 +223,7 @@ end
 
 ------------------------------ KEYBOARD EVENTS --------------------------------
 
-function C.check_unmount(self)
+function comp.check_unmount(self)
 	if not self.saved_data.rider_id then
 		return
 	end
@@ -311,7 +235,7 @@ end
 
 ------------------------------ PERIODICAL EVENTS ------------------------------
 
-function C.tp_player(self)
+function comp.tp_player(self)
 	if self.saved_data.rider_id == nil then
 		return
 	end
@@ -343,7 +267,7 @@ local function calc_effective_acceleration(self, rotation_acceleration_modifier,
 end
 
 ---@param self BoatComp
-function C.move(self)
+function comp.move(self)
 	local S = self.saved_data
 	local full_vel = self.body:get_vel()
 	local y_vel = full_vel[2]
@@ -445,7 +369,7 @@ end
 local water_id = block.index("base:water")
 
 ---@param self BoatComp
-function C.spawn_move_water_splashes(self)
+function comp.spawn_move_water_splashes(self)
 	if not self.saved_data.is_in_water or self.saved_data.is_under_water then
 		return
 	end
@@ -495,7 +419,7 @@ function C.spawn_move_water_splashes(self)
 end
 
 ---@param self BoatComp
-function C.spawn_fall_water_splashes(self)
+function comp.spawn_fall_water_splashes(self)
 	if self.saved_data.is_in_water then
 		return
 	end
@@ -591,7 +515,7 @@ end
 ------
 
 ---@param self BoatComp
-function C.handle_water_behaviour(self)
+function comp.handle_water_behaviour(self)
 	local pos = self.tsf:get_pos()
 	local x, y, z = pos[1], pos[2], pos[3]
 	local bottom_y = y + self.p.bottom_y_shift
@@ -631,15 +555,13 @@ end
 
 ------------ UPDATE / RENDER -----------
 
----@param self BoatComp
-function C.on_update(self, _)
+function comp.on_update(self, _)
 	self:handle_water_behaviour()
 	self:spawn_move_water_splashes()
 	self:check_unmount()
 end
 
----@param self BoatComp
-function C.on_render(self, _)
+function comp.on_render(self, _)
 	self:tp_player()
 	self:move()
 end
