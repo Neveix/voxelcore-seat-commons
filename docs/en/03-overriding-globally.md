@@ -103,5 +103,5 @@ Use this feature carefully, especially when distributing your pack to others.
 ## Available Functions
 
 For a full list of functions available for override, see the
-[Available Functions](./01-creating-a-standard-boat.md#available-functions-for-override)
+[Available Functions](./01-creating-a-vehicle.md#available-functions-for-override)
 section in the "Creating a Standard Boat" guide.

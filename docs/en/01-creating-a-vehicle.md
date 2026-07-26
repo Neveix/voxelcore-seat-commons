@@ -105,8 +105,8 @@ return C.init
 - The initializer receives a `super` table containing the default implementation.
 - This allows you to call the parent implementation using `C.super.<function>(self, ...)`.
 - The returned table should contain:
-  - Overridden functions (e.g., `on_used`, `on_update`)
-  - A `params` field with parameter overrides
+  - [optional] Overridden functions (e.g., `on_used`, `on_update`)
+  - [optional] A `params` field with parameter overrides
 
 ---
 
@@ -154,5 +154,5 @@ For reference implementations, see `vehicle_api:modules/components/boat.lua`.
 | `water_splashes_number` | `integer` | `3` | Number of water splash particles |
 | `water_splashes_width` | `number` | `1` | Width of water splash effect |
 | `inventory_size` | `integer` | `0` | Inventory size (0 = no inventory) |
-| `layout_id` | `string|nil` | `nil` | Inventory layout ID |
+| `layout_id` | `string or nil` | `nil` | Inventory layout ID |
 | `player_pos_shift` | `vec3` | `{0, 0.8, 0}` | Offset of the rider relative to entity center |
