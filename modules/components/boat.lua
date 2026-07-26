@@ -289,7 +289,6 @@ function C.player_mount(self, pid)
 	if self.saved_data.rider_id == pid then
 		return
 	end
-	rideable_api.unmount(pid)
 	rideable_api.mount(pid, self.entity:get_uid(), nil, function()
 		self:player_unmount()
 	end)
