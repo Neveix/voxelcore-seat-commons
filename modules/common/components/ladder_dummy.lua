@@ -1,9 +1,9 @@
 ---@type rideable_api
-local rideable_api = require("rideable_api:mount")
-require("utils")
-local common_comp = require("components/common")
+local rideable_api = require("rideable_api:api/v1/mount")
+require("seat_commons:common/utils")
+local common_comp = require("seat_commons:common/components/common")
 ---@type ladder_core
-local ladder = require("core/ladder")
+local ladder = require("seat_commons:common/core/ladder")
 
 local unpack = unpack or table.unpack
 

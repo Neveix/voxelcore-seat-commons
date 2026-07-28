@@ -1,4 +1,4 @@
-local comp = require("seat_commons:components/ladder_dummy")
+local comp = require("seat_commons:api/v1/components/ladder_dummy")
 local self = comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()

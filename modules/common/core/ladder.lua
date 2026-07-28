@@ -1,5 +1,5 @@
 ---@type rideable_api
-local rideable_api = require("rideable_api:mount")
+local rideable_api = require("rideable_api:api/v1/mount")
 
 ---@type ladder_core
 ---@diagnostic disable-next-line
