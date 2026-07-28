@@ -82,8 +82,21 @@ function comp.check_unmount(self)
 	end
 end
 
+function comp.get_tag_name(_)
+	return "vehicle_api:seat"
+end
+
+function comp.check_destroyed(self)
+	local pos = self.tsf:get_pos()
+	local block_id = block.get(pos[1], pos[2], pos[3])
+	if not block.has_tag(block_id, self:get_tag_name()) then
+		rideable_api.unmount(self.saved_data.rider_id)
+	end
+end
+
 function comp.on_update(self)
 	self:check_unmount()
+	self:check_destroyed()
 end
 
 function comp.on_render(self)

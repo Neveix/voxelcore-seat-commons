@@ -1,6 +1,8 @@
 ---@type rideable_api
 local rideable_api = require("rideable_api:mount")
 
+---@type ladder_core
+---@diagnostic disable-next-line
 local M = {}
 
 local hitbox = entities.def_hitbox(entities.def_index("base:player"))
@@ -19,7 +21,7 @@ function M.get_pos_for_ladder_entity(x, y, z)
 		return { rx + 0.5 - 1 / 16, final_y, z }
 	elseif rot == 2 then
 		return { x, final_y, rz + 0.5 + 1 / 16 }
-	elseif rot == 3 then
+	else
 		return { rx + 0.5 + 1 / 16, final_y, z }
 	end
 end
@@ -36,18 +38,18 @@ local function is_close_to_ladder(x, z, rx, rz, rot)
 	end
 end
 
-function M.is_in_ladder_range(x, y, z)
+function M.is_in_ladder_range(x, y, z, ladder_tag)
 	local rx = math.floor(x)
 	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT - M.LADDER_DUMMY_Y_SHIFT)
 	local rz = math.floor(z)
-	if block.has_tag(block.get(rx, ry, rz), "vehicle_api:ladder") then
+	if block.has_tag(block.get(rx, ry, rz), ladder_tag) then
 		local rot = block.get_rotation(rx, ry, rz)
 		return is_close_to_ladder(x, z, rx, rz, rot)
 	end
 	return false
 end
 
-function M.check_ladder(pid)
+function M.check_ladder(pid, ladder_tag)
 	if rideable_api.is_mounted(pid) then
 		return
 	end
@@ -59,7 +61,7 @@ function M.check_ladder(pid)
 		return
 	end
 	local x, y, z = player.get_pos()
-	if not M.is_in_ladder_range(x, y + M.LADDER_DUMMY_Y_SHIFT, z) then
+	if not M.is_in_ladder_range(x, y + M.LADDER_DUMMY_Y_SHIFT, z, ladder_tag) then
 		return
 	end
 	local entity_pos = {

@@ -2,5 +2,5 @@
 local ladder = require("vehicle_api:core/ladder")
 
 function on_player_tick(pid, _)
-	ladder.check_ladder(pid)
+	ladder.check_ladder(pid, "vehicle_api:ladder")
 end

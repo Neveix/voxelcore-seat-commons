@@ -210,7 +210,7 @@ function comp.move(self, delta)
 	self.common_body:set_vel(vel)
 
 	local pos = self.tsf:get_pos()
-	if not ladder.is_in_ladder_range(pos[1], pos[2], pos[3]) then
+	if not ladder.is_in_ladder_range(pos[1], pos[2], pos[3], self:get_tag_name()) then
 		self:player_start_unmount()
 	end
 end
@@ -233,6 +233,10 @@ function comp.check_unmount(self)
 		self:player_start_unmount()
 		return
 	end
+end
+
+function comp.get_tag_name(_)
+	return "vehicle_api:ladder"
 end
 
 function comp.on_update(self)

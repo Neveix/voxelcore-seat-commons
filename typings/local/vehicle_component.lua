@@ -65,6 +65,8 @@
 ---@field player_mount fun(self: SeatComp, pid: integer)
 ---@field tp_player fun(self: SeatComp)
 ---@field check_unmount fun(self: SeatComp)
+---@field check_destroyed fun(self: SeatComp)
+---@field get_tag_name fun(self: SeatComp): string
 
 ---@class LadderComp : Comp
 ---@field p LadderCompParams
@@ -78,3 +80,4 @@
 ---@field check_unmount fun(self: LadderComp )
 ---@field save_player_body_settings fun(self: LadderComp )
 ---@field load_player_body_settings fun(self: LadderComp )
+---@field get_tag_name fun(self: LadderComp): string
