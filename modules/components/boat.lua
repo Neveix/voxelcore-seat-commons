@@ -228,7 +228,7 @@ function comp.check_unmount(self)
 		return
 	end
 	if input.is_active("movement.crouch") then
-		self:player_unmount()
+		rideable_api.unmount(self.saved_data.rider_id)
 		return
 	end
 end
