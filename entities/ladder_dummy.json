@@ -1,6 +1,6 @@
 {
   "components": [
-    "vehicle_api:ladder_dummy"
+    "seat_commons:ladder_dummy"
   ],
   "hitbox": [
     0.6,

@@ -1,6 +1,6 @@
 ---@type ladder_core
-local ladder = require("vehicle_api:core/ladder")
+local ladder = require("seat_commons:core/ladder")
 
 function on_player_tick(pid, _)
-	ladder.check_ladder(pid, "vehicle_api:ladder")
+	ladder.check_ladder(pid, "seat_commons:ladder")
 end

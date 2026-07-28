@@ -7,7 +7,7 @@ To add a standard boat to your content pack, create an entity definition.
 ```json
 {
   "components": [
-    "vehicle_api:boat"
+    "seat_commons:boat"
   ],
   "body-type": "dynamic",
   "hitbox": [
@@ -21,7 +21,7 @@ To add a standard boat to your content pack, create an entity definition.
 }
 ```
 
-The `vehicle_api:boat` component provides:
+The `seat_commons:boat` component provides:
 - Physics and buoyancy
 - Player mounting (via RideableAPI)
 - Movement controls (WASD)
@@ -33,7 +33,7 @@ The `vehicle_api:boat` component provides:
 To customize a boat, create a module file in your content pack:
 
 ```
-modules/vehicle_api/boat/<your_boat_name>.lua
+modules/seat_commons/boat/<your_boat_name>.lua
 ```
 
 The `<your_boat_name>` should match the component name used in your entity definition.
@@ -49,7 +49,7 @@ There are two types of overrides:
 
 Return a table with the parameters you want to change.
 
-**Example `modules/vehicle_api/boat/my_boat.lua`:**
+**Example `modules/seat_commons/boat/my_boat.lua`:**
 
 ```lua
 return {
@@ -131,7 +131,7 @@ return C.init
 | `on_update(self, tps)` | Called every tick |
 | `on_render(self, delta)` | Called every frame (for visual updates) |
 
-For reference implementations, see `vehicle_api:modules/components/boat.lua`.
+For reference implementations, see `seat_commons:modules/components/boat.lua`.
 
 ---
 

@@ -12,7 +12,7 @@ This is useful when you want to:
 
 ## How It Works
 
-1. Get the default boat component module via `require("vehicle_api:components/boat")`.
+1. Get the default boat component module via `require("seat_commons:components/boat")`.
 2. Access the internal function table `C`.
 3. Replace any function with your own implementation.
 4. Store a reference to the original function if you need to call it.
@@ -24,7 +24,7 @@ This is useful when you want to:
 Create `scripts/world.lua` in your content pack:
 
 ```lua
-local boat_comp = require("vehicle_api:components/boat")
+local boat_comp = require("seat_commons:components/boat")
 local C = boat_comp.C
 
 function on_world_open()
@@ -63,7 +63,7 @@ end
 
 ❌ **Incorrect:**
 ```lua
--- This may run before vehicle_api is fully loaded
+-- This may run before seat_commons is fully loaded
 C.on_used = function(self, pid)
     -- custom logic
     end

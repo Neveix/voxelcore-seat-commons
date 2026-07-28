@@ -69,8 +69,8 @@ function M.check_ladder(pid, ladder_tag)
 		y + M.LADDER_DUMMY_Y_SHIFT,
 		z,
 	}
-	entities.spawn("vehicle_api:ladder_dummy", entity_pos, {
-		vehicle_api__ladder_dummy = {
+	entities.spawn("seat_commons:ladder_dummy", entity_pos, {
+		seat_commons__ladder_dummy = {
 			rider_id = pid,
 		},
 	})

@@ -65,7 +65,7 @@ function M.get_entity_defaults(comp, component_name)
 	local success, defaults = pcall(function()
 		return require(
 			string.sub(ename, 1, sep_index)
-				.. "vehicle_api/"
+				.. "seat_commons/"
 				.. component_name
 				.. "/"
 				.. string.sub(ename, sep_index + 1)

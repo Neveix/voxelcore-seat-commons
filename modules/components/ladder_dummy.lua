@@ -236,7 +236,7 @@ function comp.check_unmount(self)
 end
 
 function comp.get_tag_name(_)
-	return "vehicle_api:ladder"
+	return "seat_commons:ladder"
 end
 
 function comp.on_update(self)

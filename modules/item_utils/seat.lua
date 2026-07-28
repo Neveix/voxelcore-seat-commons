@@ -14,8 +14,8 @@ function M.try_sit_player(x, y, z, pid)
 end
 
 function M.sit_player(x, y, z, pid)
-	entities.spawn("vehicle_api:seat", { x + 0.5, y, z + 0.5 }, {
-		["vehicle_api__seat"] = {
+	entities.spawn("seat_commons:seat", { x + 0.5, y, z + 0.5 }, {
+		["seat_commons__seat"] = {
 			rider_id = pid,
 		},
 	})

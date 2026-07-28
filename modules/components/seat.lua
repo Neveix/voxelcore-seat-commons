@@ -60,7 +60,7 @@ function comp.on_spawn(self)
 	if self.saved_data.rider_id then
 		self:player_mount(self.saved_data.rider_id)
 	else
-		self.entity:despawn()
+		rideable_api.unmount(self.saved_data.rider_id)
 	end
 end
 
@@ -98,11 +98,16 @@ function comp.check_unmount(self)
 end
 
 function comp.get_tag_name(_)
-	return "vehicle_api:seat"
+	return "seat_commons:seat"
 end
 
 function comp.check_destroyed(self)
 	local pos = self.tsf:get_pos()
+	pos = {
+		math.floor(pos[1]),
+		math.floor(pos[2]),
+		math.floor(pos[3]),
+	}
 	local block_id = block.get(pos[1], pos[2], pos[3])
 	if not block.has_tag(block_id, self:get_tag_name()) then
 		rideable_api.unmount(self.saved_data.rider_id)

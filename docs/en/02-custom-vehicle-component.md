@@ -1,7 +1,7 @@
 # 02. Custom Boat Component
 
 If you need custom behavior for a whole class of boats in your content pack,
-you can create your own component based on the default `vehicle_api:boat`
+you can create your own component based on the default `seat_commons:boat`
 implementation.
 
 This is useful when:
@@ -22,7 +22,7 @@ scripts/components/<your_component_name>.lua
 **Example `scripts/components/my_boat.lua`:**
 
 ```lua
-local boat_comp = require("vehicle_api:components/boat")
+local boat_comp = require("seat_commons:components/boat")
 local self = boat_comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()
@@ -57,7 +57,7 @@ end
 ## Using Your Custom Component
 
 In your entity definition, reference your custom component instead of
-`vehicle_api:boat`:
+`seat_commons:boat`:
 
 **Example `entities/my_boat.json`:**
 
@@ -84,5 +84,5 @@ In your entity definition, reference your custom component instead of
 
 | Approach | When to use |
 | :--- | :--- |
-| **Module override** (`modules/vehicle_api/boat/`) | You want to change behavior for a **specific boat type** in your pack |
+| **Module override** (`modules/seat_commons/boat/`) | You want to change behavior for a **specific boat type** in your pack |
 | **Custom component** (`scripts/components/`) | You want to create a **new reusable component** that others can use, or you need to add entirely new functionality that isn't just overriding functions |

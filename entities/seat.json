@@ -1,6 +1,6 @@
 {
   "components": [
-    "vehicle_api:seat"
+    "seat_commons:seat"
   ],
   "hitbox": [
     0.1,
