@@ -1,0 +1,11 @@
+{
+  "components": [
+    "vehicle_api:ladder_dummy"
+  ],
+  "hitbox": [
+    0.01,
+    1.8125,
+    0.01
+  ],
+  "blocking": false
+}

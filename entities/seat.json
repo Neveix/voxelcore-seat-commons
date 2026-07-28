@@ -1,0 +1,10 @@
+{
+  "components": [
+    "vehicle_api:seat"
+  ],
+  "hitbox": [
+    0.1,
+    0.1,
+    0.1
+  ]
+}

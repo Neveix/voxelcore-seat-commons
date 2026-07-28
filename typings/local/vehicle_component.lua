@@ -25,6 +25,11 @@
 ---@field player_pos_shift vec3
 ---@field player_pos_shift_after_unmount vec3
 
+---@class LadderCompParams: CompParams
+---@field max_speed number
+---@field acceleration number
+---@field vert_acceleration number
+
 ---@class Comp
 ---@field entity voxelcore.class.entity
 ---@field tsf voxelcore.class.entity.transform
@@ -39,6 +44,7 @@
 ---@field on_attacked fun(self: Comp, entity_id: integer, pid: integer)
 ---@field on_used fun(self: Comp, pid: integer)
 ---@field on_update fun(self: Comp, tps: number)
+---@field on_physics_update fun(self: Comp, delta: number)
 ---@field on_render fun(self: Comp, delta: number)
 
 ---@class BoatComp : Comp
@@ -59,3 +65,12 @@
 ---@field player_mount fun(self: SeatComp, pid: integer)
 ---@field tp_player fun(self: SeatComp)
 ---@field check_unmount fun(self: SeatComp)
+
+---@class LadderComp : Comp
+---@field p LadderCompParams
+---@field player_unmount fun(self: LadderComp)
+---@field player_mount fun(self: LadderComp )
+---@field player_start_unmount fun(self: LadderComp )
+---@field move fun(self: LadderComp , delta: number)
+---@field tp_player fun(self: LadderComp )
+---@field check_unmount fun(self: LadderComp )

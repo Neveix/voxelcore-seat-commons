@@ -1,0 +1,72 @@
+---@type rideable_api
+local rideable_api = require("rideable_api:mount")
+
+local M = {}
+
+local hitbox = entities.def_hitbox(entities.def_index("vehicle_api:ladder_dummy"))
+M.LADDER_CHECK_Y_SHIFT = -hitbox[2] / 2 + 0.01
+
+function M.get_pos_for_ladder_entity(x, y, z)
+	local rx = math.floor(x)
+	local ry = math.floor(y)
+	local rz = math.floor(z)
+	local rot = block.get_rotation(rx, ry, rz)
+	local final_y = y
+	if rot == 0 then
+		return { x, final_y, rz + 0.5 - 1 / 16 }
+	elseif rot == 1 then
+		return { rx + 0.5 - 1 / 16, final_y, z }
+	elseif rot == 2 then
+		return { x, final_y, rz + 0.5 + 1 / 16 }
+	elseif rot == 3 then
+		return { rx + 0.5 + 1 / 16, final_y, z }
+	end
+end
+
+local function is_close_to_ladder(x, z, rx, rz, rot)
+	if rot == 0 then
+		return z < rz + 0.5
+	elseif rot == 1 then
+		return x < rx + 0.5
+	elseif rot == 2 then
+		return z > rz + 0.5
+	elseif rot == 3 then
+		return x > rx + 0.5
+	end
+end
+
+function M.is_in_ladder_range(x, y, z)
+	local rx = math.floor(x)
+	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT)
+	local rz = math.floor(z)
+	if block.has_tag(block.get(rx, ry, rz), "vehicle_api:ladder") then
+		local rot = block.get_rotation(rx, ry, rz)
+		return is_close_to_ladder(x, z, rx, rz, rot)
+	end
+	return false
+end
+
+function M.check_ladder(pid)
+	if rideable_api.is_mounted(pid) then
+		return
+	end
+	if player.is_noclip(pid) or player.is_flight(pid) then
+		return
+	end
+	local peid = player.get_entity(pid)
+	if input.is_active("movement.crouch") and entities.get(peid).rigidbody:is_grounded() then
+		return
+	end
+	local x, y, z = player.get_pos()
+	if not M.is_in_ladder_range(x, y, z) then
+		return
+	end
+	local entity_pos = { x, y, z }
+	entities.spawn("vehicle_api:ladder_dummy", entity_pos, {
+		vehicle_api__ladder_dummy = {
+			rider_id = pid,
+		},
+	})
+end
+
+return M
