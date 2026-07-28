@@ -3,8 +3,9 @@ local rideable_api = require("rideable_api:mount")
 
 local M = {}
 
-local hitbox = entities.def_hitbox(entities.def_index("vehicle_api:ladder_dummy"))
+local hitbox = entities.def_hitbox(entities.def_index("base:player"))
 M.LADDER_CHECK_Y_SHIFT = -hitbox[2] / 2 + 0.01
+M.LADDER_DUMMY_Y_SHIFT = 10000
 
 function M.get_pos_for_ladder_entity(x, y, z)
 	local rx = math.floor(x)
@@ -37,7 +38,7 @@ end
 
 function M.is_in_ladder_range(x, y, z)
 	local rx = math.floor(x)
-	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT)
+	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT - M.LADDER_DUMMY_Y_SHIFT)
 	local rz = math.floor(z)
 	if block.has_tag(block.get(rx, ry, rz), "vehicle_api:ladder") then
 		local rot = block.get_rotation(rx, ry, rz)
@@ -58,10 +59,14 @@ function M.check_ladder(pid)
 		return
 	end
 	local x, y, z = player.get_pos()
-	if not M.is_in_ladder_range(x, y, z) then
+	if not M.is_in_ladder_range(x, y + M.LADDER_DUMMY_Y_SHIFT, z) then
 		return
 	end
-	local entity_pos = { x, y, z }
+	local entity_pos = {
+		x,
+		y + M.LADDER_DUMMY_Y_SHIFT,
+		z,
+	}
 	entities.spawn("vehicle_api:ladder_dummy", entity_pos, {
 		vehicle_api__ladder_dummy = {
 			rider_id = pid,

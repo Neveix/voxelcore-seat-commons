@@ -3,9 +3,9 @@
     "vehicle_api:ladder_dummy"
   ],
   "hitbox": [
-    0.01,
+    0.6,
     1.8125,
-    0.01
+    0.6
   ],
   "blocking": false
 }

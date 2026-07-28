@@ -68,9 +68,13 @@
 
 ---@class LadderComp : Comp
 ---@field p LadderCompParams
+---@field player_stored table
+---@field common_body voxelcore.class.entity.rigidbody
 ---@field player_unmount fun(self: LadderComp)
 ---@field player_mount fun(self: LadderComp )
 ---@field player_start_unmount fun(self: LadderComp )
 ---@field move fun(self: LadderComp , delta: number)
----@field tp_player fun(self: LadderComp )
+---@field sync_pos fun(self: LadderComp )
 ---@field check_unmount fun(self: LadderComp )
+---@field save_player_body_settings fun(self: LadderComp )
+---@field load_player_body_settings fun(self: LadderComp )
