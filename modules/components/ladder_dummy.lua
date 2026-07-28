@@ -209,8 +209,8 @@ function comp.move(self, delta)
 
 	self.common_body:set_vel(vel)
 
-	local x, y, z = player.get_pos(self.saved_data.rider_id)
-	if not ladder.is_in_ladder_range(x, y, z) then
+	local pos = self.tsf:get_pos()
+	if not ladder.is_in_ladder_range(pos[1], pos[2], pos[3]) then
 		self:player_start_unmount()
 	end
 end
@@ -223,8 +223,8 @@ function comp.sync_pos(self)
 	if self.saved_data.rider_id == nil then
 		return
 	end
-	-- local x, y, z = player.get_pos(self.saved_data.rider_id)
-	-- self.tsf:set_pos({ x, y + ladder.LADDER_DUMMY_Y_SHIFT, z })
+	local x, y, z = player.get_pos(self.saved_data.rider_id)
+	self.tsf:set_pos({ x, y + ladder.LADDER_DUMMY_Y_SHIFT, z })
 end
 
 function comp.check_unmount(self)
