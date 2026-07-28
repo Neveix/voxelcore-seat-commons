@@ -63,6 +63,7 @@
 ---@field p SeatCompParams
 ---@field player_unmount fun(self: SeatComp)
 ---@field player_mount fun(self: SeatComp, pid: integer)
+---@field calc_rotated_shifted_pos fun(self: SeatComp, shift: vec3): vec3
 ---@field tp_player fun(self: SeatComp)
 ---@field check_unmount fun(self: SeatComp)
 ---@field check_destroyed fun(self: SeatComp)

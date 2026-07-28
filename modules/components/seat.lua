@@ -18,8 +18,8 @@ M.comp = comp
 function M.calc_params(SAVED_DATA, ARGS, default_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
-	p.player_pos_shift = piniter("player_pos_shift") or { 0, 1.5, 0 }
-	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0, 2, 0 }
+	p.player_pos_shift = piniter("player_pos_shift") or { 0.2, 1.5, 0 }
+	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0.2, 2, 0 }
 	return p
 end
 
@@ -39,7 +39,8 @@ end
 
 function comp.player_unmount(self)
 	local pos = self.tsf:get_pos()
-	pos = vec3.add(pos, self.p.player_pos_shift_after_unmount)
+	-- pos = vec3.add(pos, self.p.player_pos_shift_after_unmount)
+	pos = self:calc_rotated_shifted_pos(self.p.player_pos_shift_after_unmount)
 	player.set_pos(self.saved_data.rider_id, pos[1], pos[2], pos[3])
 	self.entity:despawn()
 end
@@ -65,13 +66,27 @@ end
 
 ------------------------------ PERIODICAL EVENTS ------------------------------
 
+function comp.calc_rotated_shifted_pos(self, shift)
+	local pos = self.tsf:get_pos()
+	local rot = block.get_rotation(pos[1], pos[2], pos[3])
+	local rotated_shift = vec2.rotate({
+		shift[1],
+		shift[3],
+	}, (rot + 1) % 4 * 90)
+	return vec3.add(pos, {
+		-rotated_shift[1],
+		shift[2],
+		rotated_shift[2],
+	})
+end
+
 function comp.tp_player(self)
 	local rider_id = self.saved_data.rider_id
 	if rider_id == nil then
 		return
 	end
 	local pos = self.tsf:get_pos()
-	pos = vec3.add(pos, self.p.player_pos_shift)
+	pos = self:calc_rotated_shifted_pos(self.p.player_pos_shift)
 	player.set_pos(rider_id, pos[1], pos[2], pos[3])
 	player.set_vel(rider_id, 0, 0, 0)
 end
