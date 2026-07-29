@@ -6,7 +6,7 @@ local common_comp = require("seat_commons:common/components/common")
 local M = {}
 
 ---@diagnostic disable: missing-fields
----@type SeatComp
+---@type seat_comp
 local comp = {}
 ---@diagnostic enable: missing-fields
 
@@ -18,15 +18,15 @@ M.comp = comp
 function M.calc_params(SAVED_DATA, ARGS, default_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
-	p.player_pos_shift = piniter("player_pos_shift") or { 0.2, 1.5, 0 }
-	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0.2, 2, 0 }
+	p.player_pos_shift = piniter("player_pos_shift") or { 0.2, 0.8, 0 }
+	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0.8, 0.9, 0 }
 	return p
 end
 
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
----@return SeatComp
+---@return seat_comp
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "seat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
@@ -41,7 +41,6 @@ end
 
 function comp.player_unmount(self)
 	local pos = self.tsf:get_pos()
-	-- pos = vec3.add(pos, self.p.player_pos_shift_after_unmount)
 	pos = self:calc_rotated_shifted_pos(self.p.player_pos_shift_after_unmount)
 	player.set_pos(self.saved_data.rider_id, pos[1], pos[2], pos[3])
 	self.entity:despawn()
@@ -70,7 +69,12 @@ end
 
 function comp.calc_rotated_shifted_pos(self, shift)
 	local pos = self.tsf:get_pos()
-	local rot = block.get_rotation(pos[1], pos[2], pos[3])
+	local rpos = {
+		math.floor(pos[1]),
+		math.floor(pos[2]),
+		math.floor(pos[3]),
+	}
+	local rot = block.get_rotation(rpos[1], rpos[2], rpos[3])
 	local rotated_shift = vec2.rotate({
 		shift[1],
 		shift[3],

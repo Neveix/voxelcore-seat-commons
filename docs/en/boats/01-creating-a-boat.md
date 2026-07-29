@@ -1,8 +1,13 @@
 # 01. Creating a Standard Boat
 
-To add a standard boat to your content pack, create an entity definition.
+To add a boat to your content pack, you need to add the `seat_commons:boat` component 
+to your entity definition.
 
-**Example `entities/my_boat.json`:**
+---
+
+## Example: Minimal Boat
+
+**`entities/my_boat.json`:**
 
 ```json
 {
@@ -60,18 +65,21 @@ return {
 
 All parameters are optional. If omitted, default values are used.
 
+
+See the [Available Parameters](#available-parameters) section below for full list.
+
 ---
 
 ### Overriding Functions
 
-To override functions, return an initializer function that accepts a `BoatComp` instance (the default implementation).
+To override functions, return an initializer function that accepts a `boat_comp` instance (the default implementation).
 
 **Example:**
 
 ```lua
 local C = {}
 
----@param c BoatComp
+---@param c boat_comp
 function C.init(super)
 	C.super = super
 	C.super_on_used = super.on_used
@@ -149,7 +157,7 @@ For reference implementations, see `seat_commons:modules/components/boat.lua`.
 | `roll_speed` | `number` | `0.1` | Speed of roll animation |
 | `max_roll` | `number` | `0` | Maximum roll angle (degrees) |
 | `roll_lift` | `number` | `0` | How much roll lifts the boat |
-| `bottom_y_shift` | `number` | `0` | Vertical shift of the bottom point |
+| `bottom_y_shift` | `number` | `-0.11` | Vertical shift of the bottom point |
 | `acceleration` | `number` | `0.04` | Forward acceleration multiplier |
 | `water_splashes_number` | `integer` | `3` | Number of water splash particles |
 | `water_splashes_width` | `number` | `1` | Width of water splash effect |

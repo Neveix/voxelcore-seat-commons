@@ -1,4 +1,4 @@
-# VehicleAPI
+# SeatCommons
 
 A content pack for [VoxelCore](https://github.com/MihailRis/voxelcore)
 
@@ -6,14 +6,20 @@ A content pack for [VoxelCore](https://github.com/MihailRis/voxelcore)
 
 ## Description
 
-VehicleAPI provides a framework for creating controllable water vehicles in VoxelCore.
-It includes:
+SeatCommons provides a collection of ready-to-use presets for **mountable entities** in VoxelCore.
 
-- Boat physics and movement
-- Mounting via RideableAPI
-- Pluggable component system for custom vehicles
+Includes presets for:
 
-This is a library pack. It does not add vehicles by itself.
+- **Boats** — water vehicles with physics and buoyancy
+- **Chairs** — sittable furniture (benches, thrones, etc.)
+- **Ladders** — climbable structures
+
+All presets are built on:
+- [RideableAPI](https://github.com/Neveix/rideable-api) — for mounting logic
+- A pluggable component system — for easy customization or overriding
+
+This is a library pack. It does not add any items or blocks to your game by itself.
+Other content packs use these presets to add rideable or climbable content.
 
 ---
 
@@ -28,9 +34,9 @@ This is a library pack. It does not add vehicles by itself.
 ## For Players
 
 This pack adds no visible items or mechanics on its own.
-It is a library that other content packs use to create rideable water vehicles.
+It is a library that other content packs use to add rideable, climbable, or sittable entities.
 
-If a content pack requires VehicleAPI, it will list it as a dependency.
+If a content pack requires SeatCommons, it will list it as a dependency.
 Simply install it and other packs will handle the rest.
 
 ---

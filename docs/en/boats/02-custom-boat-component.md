@@ -1,4 +1,4 @@
-# 02. Custom Boat Component
+# 02. Custom Boat component
 
 If you need custom behavior for a whole class of boats in your content pack,
 you can create your own component based on the default `seat_commons:boat`
@@ -11,7 +11,7 @@ This is useful when:
 
 ---
 
-## Creating a Custom Component
+## Creating a Custom component
 
 Create a file in your content pack:
 
@@ -54,7 +54,7 @@ end
 ```
 
 
-## Using Your Custom Component
+## Using Your Custom component
 
 In your entity definition, reference your custom component instead of
 `seat_commons:boat`:

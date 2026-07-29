@@ -31,7 +31,7 @@ M.DUMMY_FUNCTIONS_NAMES = {
 	"on_player_set",
 }
 
----@param comp Comp
+---@param comp comp
 function M.create_dummies(comp)
 	for _, fname in ipairs(M.DUMMY_FUNCTIONS_NAMES) do
 		if comp[fname] == nil then
@@ -40,7 +40,7 @@ function M.create_dummies(comp)
 	end
 end
 
----@param comp Comp
+---@param comp comp
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param defaults table
@@ -55,7 +55,7 @@ function M.override_functions(comp, SAVED_DATA, ARGS, defaults)
 	end
 end
 
----@param comp Comp
+---@param comp comp
 ---@param component_name string
 ---@return table functions, table params
 function M.get_entity_defaults(comp, component_name)
@@ -83,7 +83,7 @@ function M.get_entity_defaults(comp, component_name)
 	return {}, {}
 end
 
----@param comp Comp
+---@param comp comp
 ---@return table functions, table params
 function M.get_block_defaults(comp, component_name)
 	local bid = comp.saved_data.block_str_id or comp.args.block_str_id

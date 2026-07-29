@@ -6,7 +6,7 @@ local common_comp = require("seat_commons:common/components/common")
 local M = {}
 
 ---@diagnostic disable: missing-fields
----@type BoatComp
+---@type boat_comp
 local comp = {}
 ---@diagnostic enable: missing-fields
 
@@ -28,7 +28,7 @@ function M.calc_params(SAVED_DATA, ARGS, default_params)
 	p.roll_speed = piniter("roll_speed") or 0.1
 	p.max_roll = piniter("max_roll") or 0
 	p.roll_lift = piniter("roll_lift") or 0
-	p.bottom_y_shift = piniter("bottom_y_shift") or 0
+	p.bottom_y_shift = piniter("bottom_y_shift") or -0.11
 	p.acceleration = piniter("acceleration") or 0.04
 	p.water_splashes_number = piniter("water_splashes_number") or 3
 	p.water_splashes_width = piniter("water_splashes_width") or 1
@@ -42,7 +42,7 @@ end
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
----@return BoatComp
+---@return boat_comp
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "boat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
@@ -55,14 +55,14 @@ end
 
 ------------------------------ SAVE / SPAWN / DESPAWN -------------------------
 
----@param self BoatComp
+---@param self boat_comp
 local function update_rot_matrix(self)
 	local rot = mat4.rotate({ 0, 1, 0 }, -self.saved_data.rotation)
 	rot = mat4.rotate(rot, { 1, 0, 0 }, self.saved_data.roll)
 	self.tsf:set_rot(rot)
 end
 
----@param self BoatComp
+---@param self boat_comp
 local function update_rig_transform(self)
 	if self.p.max_roll == 0 then
 		return
@@ -75,7 +75,7 @@ end
 
 ----------
 
----@param self BoatComp
+---@param self boat_comp
 local function get_full_inventory_data(self)
 	local invid = self.saved_data.inventory_id
 	local d = {}
@@ -105,7 +105,7 @@ local function set_full_inventory_data(invid, data)
 	end
 end
 
----@param self BoatComp
+---@param self boat_comp
 local function on_spawn_handle_rot(self)
 	self.saved_data.roll = self.saved_data.roll or 0
 	self.saved_data.initial_rig_matrix = self.rig:get_matrix(0)
@@ -126,7 +126,7 @@ local function on_spawn_handle_rot(self)
 	end
 end
 
----@param self BoatComp
+---@param self boat_comp
 local function on_spawn_handle_inventory(self)
 	local invid = inventory.create(self.p.inventory_size)
 	self.saved_data.inventory_id = invid
@@ -135,7 +135,7 @@ local function on_spawn_handle_inventory(self)
 	end
 end
 
----@param self BoatComp
+---@param self boat_comp
 local function on_spawn_handle_rider(self)
 	local pid = self.saved_data.rider_id
 	if pid then
@@ -261,14 +261,14 @@ local function vec3tovec2(v3)
 	return { v3[1], v3[3] }
 end
 
----@param self BoatComp
+---@param self boat_comp
 local function calc_effective_acceleration(self, rotation_acceleration_modifier, speed)
 	return self.p.rotation_acceleration
 		* rotation_acceleration_modifier
 		* (1 - self.p.turn_velocity_dependency * (1 - math.abs(speed) / self.p.max_speed))
 end
 
----@param self BoatComp
+---@param self boat_comp
 function comp.move(self)
 	local S = self.saved_data
 	local full_vel = self.body:get_vel()
@@ -370,7 +370,7 @@ end
 
 local water_id = block.index("base:water")
 
----@param self BoatComp
+---@param self boat_comp
 function comp.spawn_move_water_splashes(self)
 	if not self.saved_data.is_in_water or self.saved_data.is_under_water then
 		return
@@ -420,7 +420,7 @@ function comp.spawn_move_water_splashes(self)
 	end
 end
 
----@param self BoatComp
+---@param self boat_comp
 function comp.spawn_fall_water_splashes(self)
 	if self.saved_data.is_in_water then
 		return
@@ -446,7 +446,7 @@ end
 
 ------------ WATER BEHAVIOUR -----------
 
----@param self BoatComp
+---@param self boat_comp
 ---@param is_positive boolean
 local function set_gravity_dir_positive(self, is_positive)
 	local gravity = self.body:get_gravity_scale()
@@ -456,7 +456,7 @@ local function set_gravity_dir_positive(self, is_positive)
 	end
 end
 
----@param self BoatComp
+---@param self boat_comp
 ---@param scale number
 local function set_gravity_scale_abs(self, scale)
 	local gravity = self.body:get_gravity_scale()
@@ -516,7 +516,7 @@ end
 
 ------
 
----@param self BoatComp
+---@param self boat_comp
 function comp.handle_water_behaviour(self)
 	local pos = self.tsf:get_pos()
 	local x, y, z = pos[1], pos[2], pos[3]

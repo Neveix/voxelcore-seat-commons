@@ -1,8 +1,8 @@
 ---@meta
 
----@class CompParams
+---@class comp_params
 
----@class BoatCompParams : CompParams
+---@class boat_comp_params : comp_params
 ---@field gravity number
 ---@field max_speed number
 ---@field rotation_acceleration number
@@ -21,11 +21,11 @@
 ---@field layout_id string|nil
 ---@field player_pos_shift vec3
 
----@class SeatCompParams: CompParams
+---@class seat_comp_params: comp_params
 ---@field player_pos_shift vec3
 ---@field player_pos_shift_after_unmount vec3
 
----@class LadderCompParams: CompParams
+---@class ladder_comp_params: comp_params
 ---@field	max_speed number
 ---@field	max_speed_cheat number
 ---@field	linear_damping number
@@ -36,55 +36,55 @@
 ---@field	vert_acceleration_cheat number
 ---@field	gravity_scale number
 
----@class Comp
+---@class comp
 ---@field entity voxelcore.class.entity
 ---@field tsf voxelcore.class.entity.transform
 ---@field body voxelcore.class.entity.rigidbody
 ---@field rig voxelcore.class.entity.skeleton
 ---@field saved_data table
 ---@field args table
----@field p CompParams
----@field on_spawn fun(self: Comp)
----@field on_save fun(self: Comp)
----@field on_despawn fun(self: Comp)
----@field on_attacked fun(self: Comp, entity_id: integer, pid: integer)
----@field on_used fun(self: Comp, pid: integer)
----@field on_update fun(self: Comp, tps: number)
----@field on_physics_update fun(self: Comp, delta: number)
----@field on_render fun(self: Comp, delta: number)
+---@field p comp_params
+---@field on_spawn fun(self: comp)
+---@field on_save fun(self: comp)
+---@field on_despawn fun(self: comp)
+---@field on_attacked fun(self: comp, entity_id: integer, pid: integer)
+---@field on_used fun(self: comp, pid: integer)
+---@field on_update fun(self: comp, tps: number)
+---@field on_physics_update fun(self: comp, delta: number)
+---@field on_render fun(self: comp, delta: number)
 
----@class BoatComp : Comp
----@field p BoatCompParams
----@field player_unmount fun(self: BoatComp)
----@field player_mount fun(self: BoatComp, pid: integer)
----@field open_inventory fun(self: BoatComp)
----@field check_unmount fun(self: BoatComp)
----@field tp_player fun(self: BoatComp)
----@field move fun(self: BoatComp)
----@field spawn_move_water_splashes fun(self: BoatComp)
----@field spawn_fall_water_splashes fun(self: BoatComp)
----@field handle_water_behaviour fun(self: BoatComp)
+---@class boat_comp : comp
+---@field p boat_comp_params
+---@field player_unmount fun(self: boat_comp)
+---@field player_mount fun(self: boat_comp, pid: integer)
+---@field open_inventory fun(self: boat_comp)
+---@field check_unmount fun(self: boat_comp)
+---@field tp_player fun(self: boat_comp)
+---@field move fun(self: boat_comp)
+---@field spawn_move_water_splashes fun(self: boat_comp)
+---@field spawn_fall_water_splashes fun(self: boat_comp)
+---@field handle_water_behaviour fun(self: boat_comp)
 
----@class SeatComp : Comp
----@field p SeatCompParams
----@field player_unmount fun(self: SeatComp)
----@field player_mount fun(self: SeatComp, pid: integer)
----@field calc_rotated_shifted_pos fun(self: SeatComp, shift: vec3): vec3
----@field tp_player fun(self: SeatComp)
----@field check_unmount fun(self: SeatComp)
----@field check_destroyed fun(self: SeatComp)
----@field get_tag_name fun(self: SeatComp): string
+---@class seat_comp : comp
+---@field p seat_comp_params
+---@field player_unmount fun(self: seat_comp)
+---@field player_mount fun(self: seat_comp, pid: integer)
+---@field calc_rotated_shifted_pos fun(self: seat_comp, shift: vec3): vec3
+---@field tp_player fun(self: seat_comp)
+---@field check_unmount fun(self: seat_comp)
+---@field check_destroyed fun(self: seat_comp)
+---@field get_tag_name fun(self: seat_comp): string
 
----@class LadderComp : Comp
----@field p LadderCompParams
+---@class ladder_comp : comp
+---@field p ladder_comp_params
 ---@field player_stored table
 ---@field pbody voxelcore.class.entity.rigidbody
----@field player_unmount fun(self: LadderComp)
----@field player_mount fun(self: LadderComp )
----@field player_start_unmount fun(self: LadderComp )
----@field move fun(self: LadderComp , delta: number)
----@field sync_pos fun(self: LadderComp )
----@field check_unmount fun(self: LadderComp )
----@field save_player_body_settings fun(self: LadderComp )
----@field load_player_body_settings fun(self: LadderComp )
----@field get_tag_name fun(self: LadderComp): string
+---@field player_unmount fun(self: ladder_comp)
+---@field player_mount fun(self: ladder_comp )
+---@field player_start_unmount fun(self: ladder_comp )
+---@field move fun(self: ladder_comp , delta: number)
+---@field sync_pos fun(self: ladder_comp )
+---@field check_unmount fun(self: ladder_comp )
+---@field save_player_body_settings fun(self: ladder_comp )
+---@field load_player_body_settings fun(self: ladder_comp )
+---@field get_tag_name fun(self: ladder_comp): string

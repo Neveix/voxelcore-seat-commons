@@ -7,7 +7,7 @@ local ladder = require("seat_commons:common/core/ladder")
 
 local M = {}
 
----@type LadderComp
+---@type ladder_comp
 ---@diagnostic disable-next-line: missing-fields
 local comp = {}
 
@@ -38,7 +38,7 @@ end
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
----@return LadderComp
+---@return ladder_comp
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "ladder"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
