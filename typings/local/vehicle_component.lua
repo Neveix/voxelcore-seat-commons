@@ -26,9 +26,15 @@
 ---@field player_pos_shift_after_unmount vec3
 
 ---@class LadderCompParams: CompParams
----@field max_speed number
----@field acceleration number
----@field vert_acceleration number
+---@field	max_speed number
+---@field	max_speed_cheat number
+---@field	linear_damping number
+---@field	linear_damping_cheat number
+---@field	vdamping number
+---@field	vdamping_cheat number
+---@field	vert_acceleration number
+---@field	vert_acceleration_cheat number
+---@field	gravity_scale number
 
 ---@class Comp
 ---@field entity voxelcore.class.entity

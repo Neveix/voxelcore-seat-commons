@@ -30,8 +30,10 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "seat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local _, def_params = common_comp.get_entity_defaults(new_comp, component_name)
+	local def_funcs, def_params = common_comp.get_entity_defaults(new_comp, component_name)
+	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, def_funcs)
 	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	common_comp.create_dummies(new_comp)
 	return new_comp
 end
 

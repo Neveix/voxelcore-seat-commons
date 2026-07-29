@@ -83,13 +83,38 @@ function M.get_entity_defaults(comp, component_name)
 	return {}, {}
 end
 
+---@param comp Comp
+---@return table functions, table params
+function M.get_block_defaults(comp, component_name)
+	local bid = comp.saved_data.block_str_id or comp.args.block_str_id
+	local sep_index = string.find(bid, ":")
+
+	local import_path = string.sub(bid, 1, sep_index)
+		.. "seat_commons/"
+		.. component_name
+		.. "/"
+		.. string.sub(bid, sep_index + 1)
+	local success, defaults = pcall(function()
+		return require(import_path)
+	end)
+	if not success then
+		return {}, {}
+	end
+	if type(defaults) == "table" then
+		return {}, defaults
+	elseif type(defaults) == "function" then
+		defaults = defaults(comp)
+		return defaults, defaults.params or {}
+	end
+	return {}, {}
+end
+
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param base_comp table
----@param component_name string
 ---@return table
-function M.new(entity, SAVED_DATA, ARGS, base_comp, component_name)
+function M.new(entity, SAVED_DATA, ARGS, base_comp)
 	local comp = table.copy(base_comp)
 	comp.entity = entity
 	comp.tsf = entity.transform
@@ -97,9 +122,6 @@ function M.new(entity, SAVED_DATA, ARGS, base_comp, component_name)
 	comp.rig = entity.skeleton
 	comp.saved_data = SAVED_DATA
 	comp.args = ARGS
-	local def_funcs, _ = M.get_entity_defaults(comp, component_name)
-	M.override_functions(comp, SAVED_DATA, ARGS, def_funcs)
-	M.create_dummies(comp)
 	return comp
 end
 

@@ -20,8 +20,18 @@ function M.calc_params(SAVED_DATA, ARGS, default_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
 	local p = {}
 	p.max_speed = piniter("max_speed") or 4
-	p.acceleration = piniter("acceleration") or 1
+	p.max_speed_cheat = piniter("max_speed_cheat") or 40
+
+	p.linear_damping = piniter("linear_damping") or 15
+	p.linear_damping_cheat = piniter("linear_damping_cheat") or 1
+
+	p.vdamping = piniter("vdamping") or 1
+	p.vdamping_cheat = piniter("vdamping_cheat") or 1
+
 	p.vert_acceleration = piniter("vert_acceleration") or 20
+	p.vert_acceleration_cheat = piniter("vert_acceleration_cheat") or 100
+
+	p.gravity_scale = piniter("gravity_scale") or 0
 	return p
 end
 
@@ -32,8 +42,10 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "ladder"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local _, def_params = common_comp.get_entity_defaults(new_comp, component_name)
+	local def_funcs, def_params = common_comp.get_block_defaults(new_comp, component_name)
+	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, def_funcs)
 	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	common_comp.create_dummies(new_comp)
 	return new_comp
 end
 
@@ -89,6 +101,7 @@ end
 function comp.on_spawn(self)
 	self.body:set_gravity_scale(0)
 	self.saved_data.rider_id = self.saved_data.rider_id or self.args.rider_id
+	self.saved_data.block_str_id = self.saved_data.block_str_id or self.args.block_str_id
 	if self.saved_data.rider_id == nil then
 		self.entity:despawn()
 		return
@@ -112,22 +125,21 @@ end
 
 function comp.move(self, delta)
 	local mov_vec = { 0.0, 0.0, 0.0 }
-	local acc = delta * self.p.acceleration
-	local v_acc = delta * self.p.vert_acceleration
-	local max_speed = self.p.max_speed
+	local v_acc
+	local max_speed
 
-	self.pbody:set_gravity_scale(0)
+	self.pbody:set_gravity_scale(self.p.gravity_scale)
 
 	if input.is_active("movement.cheat") then
-		local mod = 10
-		acc = acc * mod
-		v_acc = v_acc * mod
-		max_speed = max_speed * mod
-		self.pbody:set_linear_damping(1)
-		self.pbody:set_vdamping(5)
+		v_acc = self.p.vert_acceleration_cheat * delta
+		max_speed = self.p.max_speed_cheat
+		self.pbody:set_linear_damping(self.p.linear_damping_cheat)
+		self.pbody:set_vdamping(self.p.vdamping_cheat)
 	else
-		self.pbody:set_linear_damping(10)
-		self.pbody:set_vdamping(1)
+		v_acc = self.p.vert_acceleration * delta
+		max_speed = self.p.max_speed
+		self.pbody:set_linear_damping(self.p.linear_damping)
+		self.pbody:set_vdamping(self.p.vdamping)
 	end
 
 	if input.is_active("movement.jump") then

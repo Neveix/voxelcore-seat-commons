@@ -31,6 +31,14 @@ function M.is_in_ladder_range(x, y, z, ladder_tag)
 	return false
 end
 
+function M.get_ladder_block_str_id(x, y, z)
+	local rx = math.floor(x)
+	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT)
+	local rz = math.floor(z)
+	local block_id = block.get(rx, ry, rz)
+	return block.name(block_id)
+end
+
 function M.check_ladder(pid, ladder_tag)
 	if rideable_api.is_mounted(pid) then
 		return
@@ -46,9 +54,11 @@ function M.check_ladder(pid, ladder_tag)
 	if not M.is_in_ladder_range(x, y, z, ladder_tag) then
 		return
 	end
+	local block_str_id = M.get_ladder_block_str_id(x, y, z)
 	entities.spawn("seat_commons:ladder_dummy", { 0, 10000, 0 }, {
 		seat_commons__ladder_dummy = {
 			rider_id = pid,
+			block_str_id = block_str_id,
 		},
 	})
 end
