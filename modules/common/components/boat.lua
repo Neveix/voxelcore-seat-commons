@@ -12,30 +12,50 @@ local comp = {}
 
 M.comp = comp
 
+comp.default_params = {
+	gravity = 1,
+	max_speed = 7,
+	rotation_acceleration = 0.02,
+	rotation_deceleration = 0.003,
+	max_rotation_speed = 1,
+	max_ground_rotation_speed = 0.2,
+	turn_velocity_dependency = 0,
+	roll_speed = 0.1,
+	max_roll = 0,
+	roll_lift = 0,
+	bottom_y_shift = -0.11,
+	acceleration = 0.04,
+	water_splashes_number = 3,
+	water_splashes_width = 1,
+	inventory_size = 0,
+	layout_id = nil,
+	player_pos_shift = { 0, 0.8, 0 },
+}
+
 ---@param SAVED_DATA table
 ---@param ARGS table
----@param default_params table
-function M.calc_params(SAVED_DATA, ARGS, default_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
+---@param overriden_params table
+function M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	local p = {}
-	p.gravity = piniter("gravity") or 1
-	p.max_speed = piniter("max_speed") or 7
-	p.rotation_acceleration = piniter("rotation_acceleration") or 0.02
-	p.rotation_deceleration = piniter("rotation_deceleration") or 0.003
-	p.max_rotation_speed = piniter("max_rotation_speed") or 1
-	p.max_ground_rotation_speed = piniter("max_ground_rotation_speed") or 0.2
-	p.turn_velocity_dependency = piniter("turn_velocity_dependency") or 0
-	p.roll_speed = piniter("roll_speed") or 0.1
-	p.max_roll = piniter("max_roll") or 0
-	p.roll_lift = piniter("roll_lift") or 0
-	p.bottom_y_shift = piniter("bottom_y_shift") or -0.11
-	p.acceleration = piniter("acceleration") or 0.04
-	p.water_splashes_number = piniter("water_splashes_number") or 3
-	p.water_splashes_width = piniter("water_splashes_width") or 1
-	p.inventory_size = piniter("inventory_size") or 0
+	p.gravity = piniter("gravity")
+	p.max_speed = piniter("max_speed")
+	p.rotation_acceleration = piniter("rotation_acceleration")
+	p.rotation_deceleration = piniter("rotation_deceleration")
+	p.max_rotation_speed = piniter("max_rotation_speed")
+	p.max_ground_rotation_speed = piniter("max_ground_rotation_speed")
+	p.turn_velocity_dependency = piniter("turn_velocity_dependency")
+	p.roll_speed = piniter("roll_speed")
+	p.max_roll = piniter("max_roll")
+	p.roll_lift = piniter("roll_lift")
+	p.bottom_y_shift = piniter("bottom_y_shift")
+	p.acceleration = piniter("acceleration")
+	p.water_splashes_number = piniter("water_splashes_number")
+	p.water_splashes_width = piniter("water_splashes_width")
+	p.inventory_size = piniter("inventory_size")
 	---@type string|nil
-	p.layout_id = piniter("layout_id") or nil
-	p.player_pos_shift = piniter("player_pos_shift") or { 0, 0.8, 0 }
+	p.layout_id = piniter("layout_id")
+	p.player_pos_shift = piniter("player_pos_shift")
 	return p
 end
 
@@ -46,9 +66,9 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "boat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local def_funcs, def_params = common_comp.get_entity_defaults(new_comp, component_name)
-	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, def_funcs)
-	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	local overridden_funcs, overriden_params = common_comp.get_entity_overriden(new_comp, component_name)
+	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
+	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	common_comp.create_dummies(new_comp)
 	return new_comp
 end

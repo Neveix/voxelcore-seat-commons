@@ -12,14 +12,19 @@ local comp = {}
 
 M.comp = comp
 
+comp.default_params = {
+	player_pos_shift = { 0.2, 0.8, 0 },
+	player_pos_shift_after_unmount = { 0.8, 0.9, 0 },
+}
+
 ---@param SAVED_DATA table
 ---@param ARGS table
----@param default_params table
-function M.calc_params(SAVED_DATA, ARGS, default_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
+---@param overriden_params table
+function M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	local p = {}
-	p.player_pos_shift = piniter("player_pos_shift") or { 0.2, 0.8, 0 }
-	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount") or { 0.8, 0.9, 0 }
+	p.player_pos_shift = piniter("player_pos_shift")
+	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount")
 	return p
 end
 
@@ -30,9 +35,9 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "seat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local def_funcs, def_params = common_comp.get_entity_defaults(new_comp, component_name)
-	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, def_funcs)
-	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	local overridden_funcs, overriden_params = common_comp.get_entity_overriden(new_comp, component_name)
+	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
+	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	common_comp.create_dummies(new_comp)
 	return new_comp
 end

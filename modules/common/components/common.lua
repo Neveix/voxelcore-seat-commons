@@ -2,12 +2,12 @@ local M = {}
 
 ---@param SAVED_DATA table
 ---@param ARGS table
----@param default_params table
-function M.new_param_initializer(SAVED_DATA, ARGS, default_params)
+---@param overriden table
+function M.new_param_initializer(SAVED_DATA, ARGS, overriden, default)
 	---@param name string
 	---@return any
 	function init_func(name)
-		local res = SAVED_DATA[name] or ARGS[name] or default_params[name]
+		local res = SAVED_DATA[name] or ARGS[name] or overriden[name] or default[name]
 		SAVED_DATA[name] = res
 		return res
 	end
@@ -58,7 +58,7 @@ end
 ---@param comp comp
 ---@param component_name string
 ---@return table functions, table params
-function M.get_entity_defaults(comp, component_name)
+function M.get_entity_overriden(comp, component_name)
 	local ename = comp.entity:def_name()
 	local sep_index = string.find(ename, ":")
 

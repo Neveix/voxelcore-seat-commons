@@ -34,7 +34,7 @@
 ---@field	vdamping_cheat number
 ---@field	vert_acceleration number
 ---@field	vert_acceleration_cheat number
----@field	gravity_scale number
+---@field	gravity number
 
 ---@class comp
 ---@field entity voxelcore.class.entity
@@ -44,6 +44,7 @@
 ---@field saved_data table
 ---@field args table
 ---@field p comp_params
+---@field default_params comp_params
 ---@field on_spawn fun(self: comp)
 ---@field on_save fun(self: comp)
 ---@field on_despawn fun(self: comp)

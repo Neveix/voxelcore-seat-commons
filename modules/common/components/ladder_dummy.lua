@@ -13,25 +13,37 @@ local comp = {}
 
 M.comp = comp
 
+comp.default_params = {
+	max_speed = 4,
+	max_speed_cheat = 40,
+	linear_damping = 15,
+	linear_damping_cheat = 1,
+	vdamping = 0.7,
+	vdamping_cheat = 1,
+	vert_acceleration = 20,
+	vert_acceleration_cheat = 100,
+	gravity = 0,
+}
+
 ---@param SAVED_DATA table
 ---@param ARGS table
----@param default_params table
-function M.calc_params(SAVED_DATA, ARGS, default_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, default_params)
+---@param overriden_params table
+function M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	local p = {}
-	p.max_speed = piniter("max_speed") or 4
-	p.max_speed_cheat = piniter("max_speed_cheat") or 40
+	p.max_speed = piniter("max_speed")
+	p.max_speed_cheat = piniter("max_speed_cheat")
 
-	p.linear_damping = piniter("linear_damping") or 15
-	p.linear_damping_cheat = piniter("linear_damping_cheat") or 1
+	p.linear_damping = piniter("linear_damping")
+	p.linear_damping_cheat = piniter("linear_damping_cheat")
 
-	p.vdamping = piniter("vdamping") or 0.7
-	p.vdamping_cheat = piniter("vdamping_cheat") or 1
+	p.vdamping = piniter("vdamping")
+	p.vdamping_cheat = piniter("vdamping_cheat")
 
-	p.vert_acceleration = piniter("vert_acceleration") or 20
-	p.vert_acceleration_cheat = piniter("vert_acceleration_cheat") or 100
+	p.vert_acceleration = piniter("vert_acceleration")
+	p.vert_acceleration_cheat = piniter("vert_acceleration_cheat")
 
-	p.gravity_scale = piniter("gravity_scale") or 0
+	p.gravity = piniter("gravity")
 	return p
 end
 
@@ -42,9 +54,9 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "ladder"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local def_funcs, def_params = common_comp.get_block_defaults(new_comp, component_name)
-	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, def_funcs)
-	new_comp.p = M.calc_params(SAVED_DATA, ARGS, def_params)
+	local overridden_funcs, overriden_params = common_comp.get_entity_overriden(new_comp, component_name)
+	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
+	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	common_comp.create_dummies(new_comp)
 	return new_comp
 end
@@ -92,7 +104,7 @@ function comp.load_player_body_settings(self)
 		return
 	end
 	pbody:set_mass(self.player_stored.mass)
-	pbody:set_gravity_scale(self.player_stored.gravity_scale)
+	pbody:set_gravity_scale(self.player_stored.gravity)
 	pbody:set_linear_damping(self.player_stored.linear_damping)
 	pbody:set_vdamping(self.player_stored.vdamping)
 	pbody:set_elasticity(self.player_stored.elasticity)
@@ -128,7 +140,7 @@ function comp.move(self, delta)
 	local v_acc
 	local max_speed
 
-	self.pbody:set_gravity_scale(self.p.gravity_scale)
+	self.pbody:set_gravity_scale(self.p.gravity)
 
 	if input.is_active("movement.cheat") then
 		v_acc = self.p.vert_acceleration_cheat * delta
