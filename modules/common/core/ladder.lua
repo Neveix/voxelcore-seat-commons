@@ -40,21 +40,30 @@ function M.get_ladder_block_str_id(x, y, z)
 end
 
 function M.check_ladder(pid, ladder_tag)
-	if rideable_api.is_mounted(pid) then
-		return
-	end
 	if player.is_noclip(pid) or player.is_flight(pid) then
 		return
 	end
+
 	local peid = player.get_entity(pid)
 	if input.is_active("movement.crouch") and entities.get(peid).rigidbody:is_grounded() then
 		return
 	end
+
 	local x, y, z = player.get_pos()
 	if not M.is_in_ladder_range(x, y, z, ladder_tag) then
 		return
 	end
+
 	local block_str_id = M.get_ladder_block_str_id(x, y, z)
+	local mount_entity = rideable_api.get_mount_entity(pid)
+	if mount_entity then
+		local ent = entities.get(mount_entity)
+		local comp = ent:get_component("seat_commons:ladder_dummy")
+		if comp == nil or comp.SAVED_DATA.block_str_id == block_str_id then
+			return
+		end
+	end
+
 	entities.spawn("seat_commons:ladder_dummy", { 0, 10000, 0 }, {
 		seat_commons__ladder_dummy = {
 			rider_id = pid,

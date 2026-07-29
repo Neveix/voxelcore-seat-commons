@@ -1,6 +1,8 @@
 ---@meta
 
-rideable_api = {}
+---@class mount_data
+---@field entity_uid integer|nil
+---@field seat_id any|nil
 
 ---@class rideable_api
 --- Mounts a player on an entity or seat.
@@ -14,6 +16,6 @@ rideable_api = {}
 ---@field is_mounted fun(pid: integer): boolean
 --- Returns the mount data for a player.
 --- Returns: `{ entity_uid = ..., seat_id = ... }` or `nil`.
----@field get_mount_data fun(pid: integer): table|nil
+---@field get_mount_data fun(pid: integer): mount_data|nil
 --- Returns the entity UID that a player is mounted on (if any).
 ---@field get_mount_entity fun(pid: integer): integer|nil

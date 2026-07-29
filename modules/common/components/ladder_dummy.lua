@@ -25,7 +25,7 @@ function M.calc_params(SAVED_DATA, ARGS, default_params)
 	p.linear_damping = piniter("linear_damping") or 15
 	p.linear_damping_cheat = piniter("linear_damping_cheat") or 1
 
-	p.vdamping = piniter("vdamping") or 1
+	p.vdamping = piniter("vdamping") or 0.7
 	p.vdamping_cheat = piniter("vdamping_cheat") or 1
 
 	p.vert_acceleration = piniter("vert_acceleration") or 20
