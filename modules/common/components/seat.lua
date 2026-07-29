@@ -35,7 +35,8 @@ end
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "seat"
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
-	local overridden_funcs, overriden_params = common_comp.get_entity_overriden(new_comp, component_name)
+	SAVED_DATA.block_str_id = SAVED_DATA.block_str_id or ARGS.block_str_id
+	local overridden_funcs, overriden_params = common_comp.get_block_overriden(new_comp, component_name)
 	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
 	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	common_comp.create_dummies(new_comp)

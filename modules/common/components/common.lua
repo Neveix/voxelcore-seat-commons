@@ -85,8 +85,8 @@ end
 
 ---@param comp comp
 ---@return table functions, table params
-function M.get_block_defaults(comp, component_name)
-	local bid = comp.saved_data.block_str_id or comp.args.block_str_id
+function M.get_block_overriden(comp, component_name)
+	local bid = comp.saved_data.block_str_id
 	local sep_index = string.find(bid, ":")
 
 	local import_path = string.sub(bid, 1, sep_index)
