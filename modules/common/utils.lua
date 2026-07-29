@@ -10,4 +10,9 @@ function math.sign(x)
 	end
 end
 
+---@param vec vec3
+function vec3.length_sqr(vec)
+	return vec[1] * vec[1] + vec[2] * vec[2] + vec[3] * vec[3]
+end
+
 return M
