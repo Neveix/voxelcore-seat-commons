@@ -34,6 +34,20 @@ To use SeatCommons in your content pack:
    is installed and loaded.
 2. **Optionally** Copy the `typings/local` folder to your project (for type annotations).
 
+
+---
+
+## API Versioning
+
+SeatCommons uses API versioning to ensure backward compatibility.
+
+All requires include the API version in the path.
+
+When a new major version is released, the old version remains available.
+This allows content packs to update gradually without breaking.
+
+For more details, see the [API Versioning](./api-versioning.md).
+
 ---
 
 ## Architecture Overview

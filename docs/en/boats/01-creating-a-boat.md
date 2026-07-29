@@ -79,30 +79,24 @@ To override functions, return an initializer function that accepts a `boat_comp`
 ```lua
 local C = {}
 
----@param c boat_comp
 function C.init(super)
 	C.super = super
-	C.super_on_used = super.on_used
+  C.super_funcs = {
+    on_used = super.on_used
+  }
 	return C
 end
 
 function C.on_used(self, pid)
-	console.chat("on used overrided!")
-	C.super_on_used(self, pid)
+	console.chat("on used overriden!")
+	C.super_funcs.on_used(self, pid)
 end
 
 C.params = {
-	layout_id = "primeval_boats:inventory20",
-	inventory_size = 20,
-	gravity = 1,
 	max_speed = 7,
 	rotation_acceleration = 0.01,
 	rotation_deceleration = 0.002,
 	max_rotation_speed = 0.8,
-	turn_velocity_dependency = 0.6,
-	bottom_y_shift = -0.11,
-	roll_lift = 2 / 16,
-	max_roll = 15,
 }
 
 return C.init
@@ -111,10 +105,21 @@ return C.init
 ### How it works
 
 - The initializer receives a `super` table containing the default implementation.
-- This allows you to call the parent implementation using `C.super.<function>(self, ...)`.
 - The returned table should contain:
   - [optional] Overridden functions (e.g., `on_used`, `on_update`)
   - [optional] A `params` field with parameter overrides
+- To call the parent implementation, store a reference to the original function
+  (e.g., in `C.super_funcs`) and use it later.
+
+```lua
+C.super_funcs = {
+    on_used = super.on_used
+}
+```
+
+> ⚠️ **Warning:** Do **not** call `C.super.on_used(self, pid)` directly inside the overridden function, 
+as this will cause **infinite recursion** (it calls itself). 
+Instead, store the reference separately as shown above.
 
 ---
 
@@ -139,7 +144,7 @@ return C.init
 | `on_update(self, tps)` | Called every tick |
 | `on_render(self, delta)` | Called every frame (for visual updates) |
 
-For reference implementations, see `seat_commons:modules/components/boat.lua`.
+For reference implementations, see `seat_commons:modules/api/v1/components/boat.lua`.
 
 ---
 
