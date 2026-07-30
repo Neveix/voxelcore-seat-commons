@@ -87,6 +87,10 @@ end
 ---@return table functions, table params
 function M.get_block_overriden(comp, component_name)
 	local bid = comp.saved_data.block_str_id
+	if bid == nil then
+		debug.error("block_str_id == nil for entity " .. comp.entity:def_name())
+		return {}, {}
+	end
 	local sep_index = string.find(bid, ":")
 
 	local import_path = string.sub(bid, 1, sep_index)
