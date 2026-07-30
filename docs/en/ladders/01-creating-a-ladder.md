@@ -104,11 +104,17 @@ return C.init
 | Function | Description |
 | :--- | :--- |
 | `on_spawn(self)` | Called when the ladder entity spawns |
-| `player_mount(self, pid)` | Called when a player mounts the ladder |
+| `on_despawn(self)` | Called when the ladder entity is destroyed |
+| `player_mount(self)` | Called when a player mounts the ladder |
 | `player_unmount(self)` | Called when a player unmounts from the ladder |
-| `tp_player(self)` | Teleports the player to the ladder position |
+| `player_start_unmount(self)` | Starts the unmount process |
+| `save_player_body_settings(self)` | Saves player physics settings before mounting |
+| `load_player_body_settings(self)` | Restores player physics settings after unmounting |
+| `move(self, delta)` | Handles ladder movement and input |
+| `check_unmount(self)` | Checks if the player should unmount (e.g., noclip, flight) |
+| `get_tag_name(self)` | Returns the block tag used to identify the ladder |
 | `on_update(self, tps)` | Called every tick |
-| `on_render(self, delta)` | Called every frame (for visual updates) |
+| `on_physics_update(self, delta)` | Called after each physics step |
 
 For reference implementations, see `seat_commons:modules/api/v1/components/ladder.lua`.
 
@@ -118,6 +124,12 @@ For reference implementations, see `seat_commons:modules/api/v1/components/ladde
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `linear_damping` | `number` | `10` | Damping applied to the player's movement while on the ladder |
-| `player_pos_shift` | `vec3` | `{0, 0.8, 0}` | Offset of the rider relative to the ladder center while climbing |
-| `player_pos_shift_after_unmount` | `vec3` | `{0, 1.0, 0}` | Position the player is teleported to after unmounting |
+| `max_speed` | `number` | `4` | Maximum climbing speed (normal mode) |
+| `max_speed_cheat` | `number` | `40` | Maximum climbing speed (cheat/fast mode) |
+| `linear_damping` | `number` | `15` | Damping applied to horizontal movement while on ladder |
+| `linear_damping_cheat` | `number` | `1` | Horizontal damping in cheat/fast mode |
+| `vdamping` | `number` | `0.7` | Vertical damping while climbing |
+| `vdamping_cheat` | `number` | `1` | Vertical damping in cheat/fast mode |
+| `vert_acceleration` | `number` | `20` | Vertical acceleration while climbing |
+| `vert_acceleration_cheat` | `number` | `100` | Vertical acceleration in cheat/fast mode |
+| `gravity` | `number` | `0` | Gravity applied to the player while on ladder (0 = no gravity) |
