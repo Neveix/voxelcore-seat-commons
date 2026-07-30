@@ -2,5 +2,5 @@
 local ladder = require("seat_commons:api/v1/core/ladder")
 
 function on_player_tick(pid, _)
-	ladder.check_ladder(pid, "seat_commons:ladder")
+	ladder.check_ladder(pid, "seat_commons:ladder", "seat_commons:ladder_dummy", "seat_commons:ladder_dummy")
 end

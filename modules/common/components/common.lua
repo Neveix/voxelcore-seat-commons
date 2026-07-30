@@ -126,6 +126,8 @@ function M.new(entity, SAVED_DATA, ARGS, base_comp)
 	comp.rig = entity.skeleton
 	comp.saved_data = SAVED_DATA
 	comp.args = ARGS
+	SAVED_DATA.block_str_id = SAVED_DATA.block_str_id or ARGS.block_str_id
+	SAVED_DATA.block_tag = SAVED_DATA.block_tag or ARGS.block_tag
 	return comp
 end
 

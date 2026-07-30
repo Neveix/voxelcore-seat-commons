@@ -39,7 +39,7 @@ function M.get_ladder_block_str_id(x, y, z)
 	return block.name(block_id)
 end
 
-function M.check_ladder(pid, ladder_tag)
+function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	if player.is_noclip(pid) or player.is_flight(pid) then
 		return
 	end
@@ -58,16 +58,21 @@ function M.check_ladder(pid, ladder_tag)
 	local mount_entity = rideable_api.get_mount_entity(pid)
 	if mount_entity then
 		local ent = entities.get(mount_entity)
-		local comp = ent:get_component("seat_commons:ladder_dummy")
+		local comp = ent:get_component(ladder_tag)
 		if comp == nil or comp.SAVED_DATA.block_str_id == block_str_id then
 			return
 		end
 	end
 
-	entities.spawn("seat_commons:ladder_dummy", { 0, 10000, 0 }, {
-		seat_commons__ladder_dummy = {
+	local sep_index = string.find(component_name, ":")
+	local pack_id = string.sub(component_name, 1, sep_index - 1)
+	local comp_id = string.sub(component_name, sep_index + 1)
+
+	entities.spawn(entity_name, { 0, 10000, 0 }, {
+		[pack_id .. "__" .. comp_id] = {
 			rider_id = pid,
 			block_str_id = block_str_id,
+			block_tag = ladder_tag,
 		},
 	})
 end

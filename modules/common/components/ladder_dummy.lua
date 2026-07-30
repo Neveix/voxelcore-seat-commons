@@ -53,7 +53,6 @@ end
 ---@return ladder_comp
 function M.new(entity, SAVED_DATA, ARGS)
 	local component_name = "ladder"
-	SAVED_DATA.block_str_id = SAVED_DATA.block_str_id or ARGS.block_str_id
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
 	local overridden_funcs, overriden_params = common_comp.get_block_overriden(new_comp, component_name)
 	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
@@ -200,8 +199,8 @@ function comp.check_unmount(self)
 	end
 end
 
-function comp.get_tag_name(_)
-	return "seat_commons:ladder"
+function comp.get_tag_name(self)
+	return self.saved_data.block_tag
 end
 
 function comp.on_update(self)
