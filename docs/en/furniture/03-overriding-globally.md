@@ -9,5 +9,5 @@ See the [Global Override Guide](../common/overriding-globally.md) for a general 
 
 ## Links
 
-- [Available Functions](./01-creating-a-boat.md#available-functions-for-override)
-- [Available Parameters](./01-creating-a-boat.md#available-parameters)
+- [Available Functions](./01-creating-a-chair.md#available-functions-for-override)
+- [Available Parameters](./01-creating-a-chair.md#available-parameters)

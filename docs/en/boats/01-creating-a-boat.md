@@ -3,6 +3,8 @@
 To add a boat to your content pack, you need to add the `seat_commons:boat` component 
 to your entity definition.
 
+See the [Creating an Entity Guide](../common/creating-an-entity.md) for a general explanation of overrides.
+
 ---
 
 ## Example: Minimal Boat
@@ -35,24 +37,13 @@ The `seat_commons:boat` component provides:
 
 ## Customization
 
-To customize a boat, create a module file in your content pack:
+To customize a boat, create a module file:
 
 ```
 modules/seat_commons/boat/<your_boat_name>.lua
 ```
 
-The `<your_boat_name>` should match the component name used in your entity definition.
-
-There are two types of overrides:
-
-1. **Parameters** — simple values like speed, acceleration, etc.
-2. **Functions** — custom logic for specific events (e.g., `on_used`, `on_update`)
-
----
-
 ### Overriding Parameters
-
-Return a table with the parameters you want to change.
 
 **Example `modules/seat_commons/boat/my_boat.lua`:**
 
@@ -63,16 +54,7 @@ return {
 }
 ```
 
-All parameters are optional. If omitted, default values are used.
-
-
-See the [Available Parameters](#available-parameters) section below for full list.
-
----
-
 ### Overriding Functions
-
-To override functions, return an initializer function that accepts a `boat_comp` instance (the default implementation).
 
 **Example:**
 
@@ -80,46 +62,24 @@ To override functions, return an initializer function that accepts a `boat_comp`
 local C = {}
 
 function C.init(super)
-	C.super = super
-  C.super_funcs = {
-    on_used = super.on_used
-  }
-	return C
+    C.super = super
+    C.super_funcs = {
+        on_used = super.on_used
+    }
+    return C
 end
 
 function C.on_used(self, pid)
-	console.chat("on used overriden!")
-	C.super_funcs.on_used(self, pid)
+    console.chat("on used overridden!")
+    C.super_funcs.on_used(self, pid)
 end
 
 C.params = {
-	max_speed = 7,
-	rotation_acceleration = 0.01,
-	rotation_deceleration = 0.002,
-	max_rotation_speed = 0.8,
+    max_speed = 7,
 }
 
 return C.init
 ```
-
-### How it works
-
-- The initializer receives a `super` table containing the default implementation.
-- The returned table should contain:
-  - [optional] Overridden functions (e.g., `on_used`, `on_update`)
-  - [optional] A `params` field with parameter overrides
-- To call the parent implementation, store a reference to the original function
-  (e.g., in `C.super_funcs`) and use it later.
-
-```lua
-C.super_funcs = {
-    on_used = super.on_used
-}
-```
-
-> ⚠️ **Warning:** Do **not** call `C.super.on_used(self, pid)` directly inside the overridden function, 
-as this will cause **infinite recursion** (it calls itself). 
-Instead, store the reference separately as shown above.
 
 ---
 

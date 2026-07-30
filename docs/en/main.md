@@ -50,22 +50,13 @@ For more details, see the [API Versioning](./api-versioning.md).
 
 ---
 
-## Architecture Overview
-
-SeatCommons separates logic into two layers:
-
-| Layer | Location | Purpose |
-| :--- | :--- | :--- |
-| **Modules** | `modules/` | Core logic implementations. |
-| **components** | `scripts/components/` | Thin wrappers that call module functions. |
-
----
-
 ## Table of Contents
 
 1. Boats
 - 1.1. [Creating a Standard Boat with Custom Parameters](./boats/01-creating-a-boat.md)
-- 1.2. [Custom Boat Script](./boats/02-custom-boat-component.md)
+- 1.2. [Custom Boat Component](./boats/02-custom-component.md)
 - 1.3. [Overriding Functions Globally](./boats/03-overriding-globally.md)
 2. Furniture
+- 1.1. [Creating a Chair](./furniture/01-creating-a-chair.md)
+- 1.2. [Custom Seat Component](./furniture/02-custom-component.md)
 
