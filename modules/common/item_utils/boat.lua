@@ -1,7 +1,6 @@
 local M = {}
 
 local WATER_ID = block.index("base:water")
-local MAX_BOAT_SPAWN_DISTANCE = 4
 
 local function delete_item(pid)
 	local inv, slot = player.get_inventory(pid)
@@ -41,7 +40,9 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 	local x, y, z = player.get_pos(pid)
 	local dir = player.get_dir(pid)
 
-	local res = block.raycast({ x, y + 0.7, z }, dir, MAX_BOAT_SPAWN_DISTANCE, nil, {}, true)
+	local max_spawn_distance = player.get_interaction_distance(pid)
+
+	local res = block.raycast({ x, y + 0.7, z }, dir, max_spawn_distance, nil, {}, true)
 	if res == nil or res.block ~= WATER_ID and false then
 		return false, nil
 	end

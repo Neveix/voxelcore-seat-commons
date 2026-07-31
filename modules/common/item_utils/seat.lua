@@ -2,11 +2,10 @@
 ---@diagnostic disable-next-line
 local M = {}
 
-M.sit_reach = 3
-
 function M.try_sit_player(x, y, z, pid)
 	local px, py, pz = player.get_pos(pid)
-	if vec3.length({ px - (x + 0.5), py - (y + 0.5), pz - (z + 0.5) }) < M.sit_reach then
+	local sit_reach = player.get_interaction_distance(pid)
+	if vec3.length({ px - (x + 0.5), py - (y + 0.5), pz - (z + 0.5) }) < sit_reach then
 		M.sit_player(x, y, z, pid)
 		return true
 	end
