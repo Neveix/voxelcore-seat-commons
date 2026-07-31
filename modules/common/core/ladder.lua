@@ -8,35 +8,32 @@ local M = {}
 local hitbox = entities.def_hitbox(entities.def_index("base:player"))
 M.LADDER_CHECK_Y_SHIFT = -hitbox[2] / 2 + 0.01
 
-local function is_close_to_ladder(x, z, rx, rz, rot)
+function M.is_close_to_ladder(x, z, rx, rz, rot)
 	if rot == 0 then
 		return z < rz + 0.5
 	elseif rot == 1 then
 		return x < rx + 0.5
 	elseif rot == 2 then
 		return z > rz + 0.5
-	elseif rot == 3 then
+	else
 		return x > rx + 0.5
 	end
 end
 
-function M.is_in_ladder_range(x, y, z, ladder_tag)
-	local rx = math.floor(x)
-	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT)
-	local rz = math.floor(z)
-	if block.has_tag(block.get(rx, ry, rz), ladder_tag) then
-		local rot = block.get_rotation(rx, ry, rz)
-		return is_close_to_ladder(x, z, rx, rz, rot)
+function M.is_in_ladder_range(pl_pos, block_id)
+	local p = M.get_ladder_check_pos(pl_pos)
+	if block.get(p[1], p[2], p[3]) == block_id then
+		local rot = block.get_rotation(p[1], p[2], p[3])
+		return M.is_close_to_ladder(pl_pos[1], pl_pos[3], p[1], p[3], rot)
 	end
 	return false
 end
 
-function M.get_ladder_block_str_id(x, y, z)
-	local rx = math.floor(x)
-	local ry = math.floor(y + M.LADDER_CHECK_Y_SHIFT)
-	local rz = math.floor(z)
-	local block_id = block.get(rx, ry, rz)
-	return block.name(block_id)
+function M.get_ladder_check_pos(pl_pos)
+	pl_pos[1] = math.floor(pl_pos[1])
+	pl_pos[2] = math.floor(pl_pos[2] + M.LADDER_CHECK_Y_SHIFT)
+	pl_pos[3] = math.floor(pl_pos[3])
+	return pl_pos
 end
 
 function M.check_ladder(pid, ladder_tag, entity_name, component_name)
@@ -49,12 +46,20 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 		return
 	end
 
-	local x, y, z = player.get_pos()
-	if not M.is_in_ladder_range(x, y, z, ladder_tag) then
+	local px, py, pz = player.get_pos()
+	local pl_pos = { px, py, pz }
+	local check_pos = M.get_ladder_check_pos(pl_pos)
+	local block_id = block.get(check_pos[1], check_pos[2], check_pos[3])
+	local block_str_id = block.name(block_id)
+	if block.has_tag(block_id, ladder_tag) then
+		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
+		if not M.is_close_to_ladder(px, pz, check_pos[1], check_pos[3], rot) then
+			return
+		end
+	else
 		return
 	end
 
-	local block_str_id = M.get_ladder_block_str_id(x, y, z)
 	local mount_entity = rideable_api.get_mount_entity(pid)
 	if mount_entity then
 		local ent = entities.get(mount_entity)

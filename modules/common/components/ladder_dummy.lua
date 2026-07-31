@@ -64,10 +64,11 @@ end
 ------------------------------ SAVE / SPAWN / DESPAWN -------------------------
 
 function comp.player_unmount(self)
+	local x, y, z = player.get_pos(self.saved_data.rider_id)
 	local vel = self.pbody:get_vel()
 	local vel_mod = 1
 	if vel[2] > 0.5 then
-		vel[2] = vel[2] + 4
+		vel[2] = vel[2] + math.clamp(4.5 - vel[2], 0, 4.5)
 	end
 	vel[1] = vel[1] * vel_mod
 	vel[3] = vel[3] * vel_mod
@@ -115,6 +116,7 @@ function comp.on_spawn(self)
 		self.entity:despawn()
 		return
 	end
+	self.saved_data.block_id = block.index(self.saved_data.block_str_id)
 	self.saved_data.rider_id = self.saved_data.rider_id or self.args.rider_id
 	if self.saved_data.rider_id == nil then
 		self.entity:despawn()
@@ -136,7 +138,7 @@ function comp.on_despawn(self)
 	self.saved_data.rider_id = nil
 end
 
------------------------------- PERIODICAL EVENTS ------------------------------
+--------------------------- PERIODICAL EVENTS ------------------------------
 
 function comp.move(self, delta)
 	local mov_vec = { 0.0, 0.0, 0.0 }
@@ -172,7 +174,6 @@ function comp.move(self, delta)
 
 	local vel = self.pbody:get_vel()
 	vel = vec3.add(vel, mov_vec)
-
 	len_sqr = vec3.length_sqr(vel)
 	if len_sqr > max_speed * max_speed then
 		local len = math.sqrt(len_sqr)
@@ -180,11 +181,6 @@ function comp.move(self, delta)
 	end
 
 	self.pbody:set_vel(vel)
-
-	local x, y, z = player.get_pos(self.saved_data.rider_id)
-	if not ladder.is_in_ladder_range(x, y, z, self:get_tag_name()) then
-		self:player_start_unmount()
-	end
 end
 
 function comp.player_start_unmount(self)
@@ -194,6 +190,12 @@ end
 function comp.check_unmount(self)
 	local uid = self.entity:get_uid()
 	if player.is_noclip(uid) or player.is_flight(uid) then
+		self:player_start_unmount()
+		return
+	end
+
+	local x, y, z = player.get_pos(self.saved_data.rider_id)
+	if not ladder.is_in_ladder_range({ x, y, z }, self.saved_data.block_id) then
 		self:player_start_unmount()
 		return
 	end
