@@ -130,7 +130,7 @@ For reference implementations, see `seat_commons:modules/api/v1/components/ladde
 | `linear_damping` | `number` | `15` | Damping applied to horizontal movement while on ladder |
 | `linear_damping_cheat` | `number` | `1` | Horizontal damping in cheat/fast mode |
 | `vdamping` | `number` | `0.7` | Vertical damping while climbing |
-| `vdamping_cheat` | `number` | `1` | Vertical damping in cheat/fast mode |
+| `vdamping_cheat` | `number` | `0.2` | Vertical damping in cheat/fast mode |
 | `vert_acceleration` | `number` | `20` | Vertical acceleration while climbing |
 | `vert_acceleration_cheat` | `number` | `100` | Vertical acceleration in cheat/fast mode |
 | `gravity` | `number` | `0` | Gravity applied to the player while on ladder (0 = no gravity) |
