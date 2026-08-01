@@ -5,6 +5,6 @@
   "creator": "Neveix",
   "description": "Common utilities for making vehicles, seats, ladders",
   "dependencies": [
-    "rideable_api"
+    "rideable_api@>=1.0"
   ]
 }
