@@ -133,5 +133,6 @@ For reference implementations, see `seat_commons:modules/api/v1/components/seat.
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
+| `enable_noclip` | `boolean` | `false` | Whether enable noclip when start sitting |
 | `player_pos_shift` | `vec3` | `{0.2, 0.8, 0}` | Offset of the rider relative to the chair center while sitting |
 | `player_pos_shift_after_unmount` | `vec3` | `{0.8, 0.9, 0}` | Position the player is teleported to after unmounting |

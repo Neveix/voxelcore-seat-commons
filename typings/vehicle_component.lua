@@ -22,6 +22,7 @@
 ---@field player_pos_shift vec3
 
 ---@class seat_comp_params: comp_params
+---@field enable_noclip boolean
 ---@field player_pos_shift vec3
 ---@field player_pos_shift_after_unmount vec3
 

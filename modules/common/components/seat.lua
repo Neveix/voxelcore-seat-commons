@@ -13,6 +13,7 @@ local comp = {}
 M.comp = comp
 
 comp.default_params = {
+	enable_noclip = false,
 	player_pos_shift = { 0.2, 0.8, 0 },
 	player_pos_shift_after_unmount = { 0.8, 0.9, 0 },
 }
@@ -23,6 +24,7 @@ comp.default_params = {
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	local p = {}
+	p.enable_noclip = piniter("enable_noclip")
 	p.player_pos_shift = piniter("player_pos_shift")
 	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount")
 	return p
@@ -49,6 +51,7 @@ function comp.player_unmount(self)
 	pos = self:calc_rotated_shifted_pos(self.p.player_pos_shift_after_unmount)
 	player.set_pos(self.saved_data.rider_id, pos[1], pos[2], pos[3])
 	self.entity:despawn()
+	player.set_noclip(self.saved_data.rider_id, false)
 end
 
 function comp.player_mount(self)
@@ -56,6 +59,7 @@ function comp.player_mount(self)
 	rideable_api.mount(rider_id, self.entity:get_uid(), nil, function()
 		self:player_unmount()
 	end)
+	player.set_noclip(rider_id, self.p.enable_noclip)
 end
 
 ------
