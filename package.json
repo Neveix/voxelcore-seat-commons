@@ -1,7 +1,7 @@
 {
   "id": "seat_commons",
   "title": "Seat Commons",
-  "version": "0.1.0",
+  "version": "1.0",
   "creator": "Neveix",
   "description": "Common utilities for making vehicles, seats, ladders",
   "dependencies": [
