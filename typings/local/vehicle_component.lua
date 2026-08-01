@@ -89,3 +89,5 @@
 ---@field save_player_body_settings fun(self: ladder_comp )
 ---@field load_player_body_settings fun(self: ladder_comp )
 ---@field get_tag_name fun(self: ladder_comp): string
+---@field init_step_sounds fun(self: ladder_comp)
+---@field play_step_sounds fun(self: ladder_comp)

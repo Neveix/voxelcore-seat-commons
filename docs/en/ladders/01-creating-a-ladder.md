@@ -114,7 +114,8 @@ return C.init
 | `check_unmount(self)` | Checks if the player should unmount (e.g., noclip, flight) |
 | `get_tag_name(self)` | Returns the block tag used to identify the ladder |
 | `on_update(self, tps)` | Called every tick |
-| `on_physics_update(self, delta)` | Called after each physics step |
+| `init_step_sounds(self, delta)` | Called in on_spawn. |
+| `play_step_sounds(self, delta)` | Called in on_update to play step sounds |
 
 For reference implementations, see `seat_commons:modules/api/v1/components/ladder.lua`.
 

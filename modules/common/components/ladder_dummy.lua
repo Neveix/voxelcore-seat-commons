@@ -64,7 +64,6 @@ end
 ------------------------------ SAVE / SPAWN / DESPAWN -------------------------
 
 function comp.player_unmount(self)
-	local x, y, z = player.get_pos(self.saved_data.rider_id)
 	local vel = self.pbody:get_vel()
 	local vel_mod = 1
 	if vel[2] > 0.5 then
@@ -112,10 +111,11 @@ function comp.load_player_body_settings(self)
 end
 
 function comp.on_spawn(self)
-	if self.saved_data.block_str_id == nil then
+	if self.saved_data.block_str_id == nil or self.saved_data.already_initialized then
 		self.entity:despawn()
 		return
 	end
+	self.saved_data.already_initialized = true
 	self.saved_data.block_id = block.index(self.saved_data.block_str_id)
 	self.saved_data.rider_id = self.saved_data.rider_id or self.args.rider_id
 	if self.saved_data.rider_id == nil then
@@ -125,11 +125,7 @@ function comp.on_spawn(self)
 	self.body:set_gravity_scale(0)
 	self.pbody = entities.get(player.get_entity(self.saved_data.rider_id)).rigidbody
 	self:save_player_body_settings()
-	if self.saved_data.already_initialized then
-		self.entity:despawn()
-		return
-	end
-	self.saved_data.already_initialized = true
+	self:init_step_sounds()
 	self:player_mount()
 end
 
@@ -205,11 +201,33 @@ function comp.get_tag_name(self)
 	return self.saved_data.block_tag
 end
 
+function comp.init_step_sounds(self)
+	local s = self.saved_data
+	s.last_time_played_step_sound = time.uptime()
+	local mat = block.properties[s.block_id].material
+	mat = string.sub(mat, string.find(mat, ":") + 1)
+	s.block_material = mat
+end
+
+function comp.play_step_sounds(self)
+	local s = self.saved_data
+	local mat = s.block_material or "wood"
+	s.last_time_played_step_sound = s.last_time_played_step_sound or time.uptime()
+	local x, y, z = player.get_pos(s.rider_id)
+	local speed = vec3.length(self.pbody:get_vel())
+	local period = 0.8 - (-0.2 + math.clamp(speed, 0.2, 1)) / 0.8 * 0.2
+	if speed >= 0.2 and time.uptime() - s.last_time_played_step_sound > period then
+		audio.play_sound("steps/" .. mat, x, y + ladder.LADDER_CHECK_Y_SHIFT, z, 0.2, 1)
+		s.last_time_played_step_sound = time.uptime()
+	end
+end
+
 function comp.on_update(self)
 	if self.saved_data.rider_id == nil then
 		return
 	end
 	self:check_unmount()
+	self:play_step_sounds()
 end
 
 function comp.on_physics_update(self, delta)
