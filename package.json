@@ -1,10 +1,10 @@
 {
   "id": "seat_commons",
   "title": "Seat Commons",
-  "version": "1.0",
+  "version": "1.0.0",
   "creator": "Neveix",
   "description": "Common utilities for making vehicles, seats, ladders",
   "dependencies": [
-    "rideable_api@>=1.0"
+    "rideable_api"
   ]
 }
