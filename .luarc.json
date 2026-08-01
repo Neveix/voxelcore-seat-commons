@@ -7,7 +7,6 @@
   "runtime.version": "LuaJIT",
   "workspace.library": [
     "../typings",
-    "../rideable_api/typings",
     "./typings",
     "./modules",
     "./scripts"
