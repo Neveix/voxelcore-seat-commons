@@ -25,7 +25,7 @@ comp.default_params = {
 	roll_lift = 0,
 	bottom_y_shift = -0.11,
 	acceleration = 0.04,
-	water_splashes_number = 3,
+	water_splashes_number = 4,
 	water_splashes_width = 1,
 	inventory_size = 0,
 	layout_id = nil,
@@ -410,17 +410,21 @@ function comp.spawn_move_water_splashes(self)
 	vel = vec2.normalize(vel)
 	local vel_ortho = vec2.rotate(vel, 90)
 
-	for i = 1, self.p.water_splashes_number do
+	local w_spl = self.p.water_splashes_number
+	-- local last_spawned = self.saved_data.move_water_splashes_last_spawned
+
+	for i = 0, w_spl - 1 do
 		if random.random() < probability then
+			-- if true then
 			local p = vec3.sub(
 				pos,
 				vec3.mul({
 					vel[1],
 					0,
 					vel[2],
-				}, 1.1)
+				}, 1)
 			)
-			local m = -0.5 + (i - 1) / self.p.water_splashes_number * self.p.water_splashes_width
+			local m = (-(w_spl - 1) / 2 + i) * self.p.water_splashes_width / w_spl
 			p = vec3.add(p, {
 				vel_ortho[1] * m,
 				0,
@@ -562,14 +566,16 @@ function comp.handle_water_behaviour(self)
 
 		set_gravity_dir_positive(self, false)
 	else
-		self.saved_data.is_in_water = false
+		self.saved_data.is_under_water = false
 		set_gravity_dir_positive(self, true)
 
 		if overlap_any_block(x, bottom_y - 0.1, z, water_id) then
 			set_gravity_scale_abs(self, self.p.gravity * 0.01)
+			self.saved_data.is_in_water = true
 			self.body:set_vdamping(20)
 		else
 			set_gravity_scale_abs(self, self.p.gravity)
+			self.saved_data.is_in_water = false
 			self.body:set_vdamping(3)
 		end
 	end

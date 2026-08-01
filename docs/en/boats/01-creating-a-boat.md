@@ -124,7 +124,7 @@ For reference implementations, see `seat_commons:modules/api/v1/components/boat.
 | `roll_lift` | `number` | `0` | How much roll lifts the boat |
 | `bottom_y_shift` | `number` | `-0.11` | Vertical shift of the bottom point |
 | `acceleration` | `number` | `0.04` | Forward acceleration multiplier |
-| `water_splashes_number` | `integer` | `3` | Number of water splash particles |
+| `water_splashes_number` | `integer` | `4` | Number of water splash particles |
 | `water_splashes_width` | `number` | `1` | Width of water splash effect |
 | `inventory_size` | `integer` | `0` | Inventory size (0 = no inventory) |
 | `layout_id` | `string or nil` | `nil` | Inventory layout ID |
