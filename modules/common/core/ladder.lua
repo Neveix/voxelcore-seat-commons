@@ -38,12 +38,12 @@ end
 
 function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	if player.is_noclip(pid) or player.is_flight(pid) then
-		return
+		return false
 	end
 
 	local peid = player.get_entity(pid)
 	if input.is_active("movement.crouch") and entities.get(peid).rigidbody:is_grounded() then
-		return
+		return false
 	end
 
 	local px, py, pz = player.get_pos()
@@ -54,10 +54,10 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	if block.has_tag(block_id, ladder_tag) then
 		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
 		if not M.is_close_to_ladder(px, pz, check_pos[1], check_pos[3], rot) then
-			return
+			return false
 		end
 	else
-		return
+		return false
 	end
 
 	local mount_entity = rideable_api.get_mount_entity(pid)
@@ -65,7 +65,7 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 		local ent = entities.get(mount_entity)
 		local comp = ent:get_component(ladder_tag)
 		if comp == nil or comp.SAVED_DATA.block_str_id == block_str_id then
-			return
+			return false
 		end
 	end
 
@@ -80,6 +80,7 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 			block_tag = ladder_tag,
 		},
 	})
+	return true
 end
 
 return M
