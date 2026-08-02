@@ -98,6 +98,7 @@ function comp.on_spawn(self)
 	self.saved_data.already_initialized = true
 	self.saved_data.block_id = block.index(self.saved_data.block_str_id)
 	self.saved_data.rider_id = self.saved_data.rider_id or self.args.rider_id
+	self.saved_data.on_double_sided = self.saved_data.on_double_sided or self.args.on_double_sided
 	if self.saved_data.rider_id == nil then
 		self.entity:despawn()
 		return
@@ -180,10 +181,21 @@ function comp.check_unmount(self)
 
 	local x, y, z = player.get_pos(self.saved_data.rider_id)
 	local pl_pos = { x, y, z }
-	if
-		not ladder.is_in_ladder_range(pl_pos, self.saved_data.block_id, nil, self.saved_data.block_tag)
-		and not ladder.is_in_double_sided_ladder_range(pl_pos, nil, self.saved_data.block_tag)
-	then
+
+	local do_unmount = false
+	if self.saved_data.on_double_sided then
+		if
+			not ladder.is_in_double_sided_ladder_range(pl_pos, self.saved_data.block_id, nil, self.saved_data.block_tag)
+		then
+			do_unmount = true
+		end
+	else
+		if not ladder.is_in_ladder_range(pl_pos, self.saved_data.block_id, nil, self.saved_data.block_tag) then
+			do_unmount = true
+		end
+	end
+
+	if do_unmount then
 		self:player_start_unmount()
 		return
 	end

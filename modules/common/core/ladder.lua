@@ -70,14 +70,18 @@ local function get_double_sided_blocks_to_check(pl_pos, check_pos)
 	return blocks_to_check
 end
 
-function M.is_in_double_sided_ladder_range(pl_pos, check_pos, ladder_tag)
+function M.is_in_double_sided_ladder_range(pl_pos, block_id, check_pos, ladder_tag)
 	check_pos = check_pos or M.get_ladder_check_pos(pl_pos)
 	local blocks_to_check = get_double_sided_blocks_to_check(pl_pos, check_pos)
-	local block_id, bx, by, bz
+	local cur_block_id, bx, by, bz
 	for _, block_to_check in ipairs(blocks_to_check) do
 		bx, by, bz = unpack(block_to_check.pos)
-		block_id = block.get(bx, by, bz)
-		if block.has_tag(block_id, "intcom:double_sided_ladder") and block.has_tag(block_id, ladder_tag) then
+		cur_block_id = block.get(bx, by, bz)
+		if
+			(not block_id or block_id == cur_block_id)
+			and block.has_tag(cur_block_id, "intcom:double_sided_ladder")
+			and block.has_tag(cur_block_id, ladder_tag)
+		then
 			local rot = block.get_rotation(bx, by, bz)
 			if rot == block_to_check.rot then
 				if M.is_close_to_ladder(pl_pos[1], pl_pos[3], check_pos[1], check_pos[3], (rot + 2) % 4) then
@@ -106,13 +110,16 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	local block_str_id = block.name(block_id)
 
 	local is_in_ladder_range = M.is_in_ladder_range(pl_pos, block_id, check_pos, ladder_tag)
-	local is_in_double_sided_ladder_range = M.is_in_double_sided_ladder_range(pl_pos, check_pos, ladder_tag)
+	local is_in_double_sided_ladder_range = M.is_in_double_sided_ladder_range(pl_pos, nil, check_pos, ladder_tag)
+
+	local on_double_sided = false
 
 	if not is_in_ladder_range then
 		if is_in_double_sided_ladder_range then
 			local d = is_in_double_sided_ladder_range
 			block_id = block.get(unpack(d.pos))
 			block_str_id = block.name(block_id)
+			on_double_sided = true
 		else
 			return false
 		end
@@ -136,6 +143,7 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 			rider_id = pid,
 			block_str_id = block_str_id,
 			block_tag = ladder_tag,
+			on_double_sided = on_double_sided,
 		},
 	})
 	return true
