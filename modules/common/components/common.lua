@@ -1,15 +1,16 @@
 local M = {}
 
+---@param params table
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param overriden table
-function M.new_param_initializer(SAVED_DATA, ARGS, overriden, default)
+function M.new_param_initializer(params, SAVED_DATA, ARGS, overriden, default)
 	---@param name string
 	---@return any
 	function init_func(name)
 		local res = SAVED_DATA[name] or ARGS[name] or overriden[name] or default[name]
 		SAVED_DATA[name] = res
-		return res
+		params[name] = res
 	end
 	return init_func
 end
@@ -64,11 +65,7 @@ function M.get_entity_overriden(comp, component_name)
 
 	local success, defaults = pcall(function()
 		return require(
-			string.sub(ename, 1, sep_index)
-				.. "intcom/"
-				.. component_name
-				.. "/"
-				.. string.sub(ename, sep_index + 1)
+			string.sub(ename, 1, sep_index) .. "intcom/" .. component_name .. "/" .. string.sub(ename, sep_index + 1)
 		)
 	end)
 	if not success then

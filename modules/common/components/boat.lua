@@ -36,27 +36,27 @@ comp.default_params = {
 ---@param ARGS table
 ---@param overriden_params table
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
-	local p = {}
-	p.gravity = piniter("gravity")
-	p.max_speed = piniter("max_speed")
-	p.rotation_acceleration = piniter("rotation_acceleration")
-	p.rotation_deceleration = piniter("rotation_deceleration")
-	p.max_rotation_speed = piniter("max_rotation_speed")
-	p.max_ground_rotation_speed = piniter("max_ground_rotation_speed")
-	p.turn_velocity_dependency = piniter("turn_velocity_dependency")
-	p.roll_speed = piniter("roll_speed")
-	p.max_roll = piniter("max_roll")
-	p.roll_lift = piniter("roll_lift")
-	p.bottom_y_shift = piniter("bottom_y_shift")
-	p.acceleration = piniter("acceleration")
-	p.water_splashes_number = piniter("water_splashes_number")
-	p.water_splashes_width = piniter("water_splashes_width")
-	p.inventory_size = piniter("inventory_size")
+	local params = {}
+	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
+	piniter("gravity")
+	piniter("max_speed")
+	piniter("rotation_acceleration")
+	piniter("rotation_deceleration")
+	piniter("max_rotation_speed")
+	piniter("max_ground_rotation_speed")
+	piniter("turn_velocity_dependency")
+	piniter("roll_speed")
+	piniter("max_roll")
+	piniter("roll_lift")
+	piniter("bottom_y_shift")
+	piniter("acceleration")
+	piniter("water_splashes_number")
+	piniter("water_splashes_width")
+	piniter("inventory_size")
 	---@type string|nil
-	p.layout_id = piniter("layout_id")
-	p.player_pos_shift = piniter("player_pos_shift")
-	return p
+	piniter("layout_id")
+	piniter("player_pos_shift")
+	return params
 end
 
 ---@param entity voxelcore.class.entity

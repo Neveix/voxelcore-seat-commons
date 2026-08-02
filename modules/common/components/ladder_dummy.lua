@@ -31,25 +31,25 @@ comp.default_params = {
 ---@param ARGS table
 ---@param overriden_params table
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
-	local p = {}
-	p.max_speed_xz = piniter("max_speed_xz")
-	p.max_speed_xz_cheat = piniter("max_speed_xz_cheat")
+	local params = {}
+	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
+	piniter("max_speed_xz")
+	piniter("max_speed_xz_cheat")
 
-	p.max_speed_y = piniter("max_speed_y")
-	p.max_speed_y_cheat = piniter("max_speed_y_cheat")
+	piniter("max_speed_y")
+	piniter("max_speed_y_cheat")
 
-	p.linear_damping = piniter("linear_damping")
-	p.linear_damping_cheat = piniter("linear_damping_cheat")
+	piniter("linear_damping")
+	piniter("linear_damping_cheat")
 
-	p.vdamping = piniter("vdamping")
-	p.vdamping_cheat = piniter("vdamping_cheat")
+	piniter("vdamping")
+	piniter("vdamping_cheat")
 
-	p.vert_acceleration = piniter("vert_acceleration")
-	p.vert_acceleration_cheat = piniter("vert_acceleration_cheat")
+	piniter("vert_acceleration")
+	piniter("vert_acceleration_cheat")
 
-	p.gravity = piniter("gravity")
-	return p
+	piniter("gravity")
+	return params
 end
 
 ---@param entity voxelcore.class.entity

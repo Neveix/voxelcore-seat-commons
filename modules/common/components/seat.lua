@@ -22,12 +22,12 @@ comp.default_params = {
 ---@param ARGS table
 ---@param overriden_params table
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
-	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
-	local p = {}
-	p.enable_noclip = piniter("enable_noclip")
-	p.player_pos_shift = piniter("player_pos_shift")
-	p.player_pos_shift_after_unmount = piniter("player_pos_shift_after_unmount")
-	return p
+	local params = {}
+	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
+	piniter("enable_noclip")
+	piniter("player_pos_shift")
+	piniter("player_pos_shift_after_unmount")
+	return params
 end
 
 ---@param entity voxelcore.class.entity
