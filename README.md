@@ -2,6 +2,10 @@
 
 A content pack for [VoxelCore](https://github.com/MihailRis/voxelcore)
 
+[Русская версия](/docs/ru/README.md)
+
+*Note: README was written with the assistance of AI.*
+
 ---
 
 ## Description
