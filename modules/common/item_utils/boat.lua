@@ -35,7 +35,7 @@ end
 --- Should be called when item used, to calculate boat position
 ---@param pid integer player id
 ---@param boat_entity_index integer
----@return boolean success, vec3|nil pos
+---@return vec3|nil pos
 function M.get_boat_placement_by_player(pid, boat_entity_index)
 	local x, y, z = player.get_pos(pid)
 	local dir = player.get_dir(pid)
@@ -44,7 +44,7 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 
 	local res = block.raycast({ x, y + 0.7, z }, dir, max_spawn_distance, nil, {}, true)
 	if res == nil or res.block ~= WATER_ID and false then
-		return false, nil
+		return nil
 	end
 
 	local pos = res.iendpoint
@@ -53,7 +53,7 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 	end
 
 	if block.is_solid_at(pos[1], pos[2], pos[3]) then
-		return false, nil
+		return nil
 	end
 
 	pos[1] = pos[1] + 0.5
@@ -68,10 +68,10 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 
 	local all_ents = entities.get_all_in_box(hibox_left_corner, hitbox)
 	if table.count_pairs(all_ents) ~= 0 then
-		return false, nil
+		return nil
 	end
 
-	return true, pos
+	return pos
 end
 
 return M
