@@ -48,7 +48,7 @@ function M.get_boat_placement_by_player(pid, boat_entity_index)
 	end
 
 	local pos = res.iendpoint
-	if block.is_solid_at(pos[1], pos[2], pos[3]) or block.get(pos[1], pos[2], pos[3]) == WATER_ID then
+	if not block.is_replaceable_at(pos[1], pos[2], pos[3]) or block.get(pos[1], pos[2], pos[3]) == WATER_ID then
 		pos[2] = pos[2] + 1
 	end
 
