@@ -14,13 +14,15 @@ local comp = {}
 M.comp = comp
 
 comp.default_params = {
-	max_speed = 4,
-	max_speed_cheat = 40,
-	linear_damping = 15,
-	linear_damping_cheat = 1,
-	vdamping = 0.7,
+	max_speed_xz = 1.5,
+	max_speed_xz_cheat = 50,
+	max_speed_y = 2,
+	max_speed_y_cheat = 80,
+	linear_damping = 10,
+	linear_damping_cheat = 2,
+	vdamping = 0.5,
 	vdamping_cheat = 0.2,
-	vert_acceleration = 20,
+	vert_acceleration = 10,
 	vert_acceleration_cheat = 100,
 	gravity = 0,
 }
@@ -31,8 +33,11 @@ comp.default_params = {
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	local piniter = common_comp.new_param_initializer(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	local p = {}
-	p.max_speed = piniter("max_speed")
-	p.max_speed_cheat = piniter("max_speed_cheat")
+	p.max_speed_xz = piniter("max_speed_xz")
+	p.max_speed_xz_cheat = piniter("max_speed_xz_cheat")
+
+	p.max_speed_y = piniter("max_speed_y")
+	p.max_speed_y_cheat = piniter("max_speed_y_cheat")
 
 	p.linear_damping = piniter("linear_damping")
 	p.linear_damping_cheat = piniter("linear_damping_cheat")
@@ -139,18 +144,20 @@ end
 function comp.move(self, delta)
 	local mov_vec = { 0.0, 0.0, 0.0 }
 	local v_acc
-	local max_speed
+	local max_speed_xz, max_speed_y
 
 	self.pbody:set_gravity_scale(self.p.gravity)
 
 	if input.is_active("movement.cheat") then
 		v_acc = self.p.vert_acceleration_cheat * delta
-		max_speed = self.p.max_speed_cheat
+		max_speed_xz = self.p.max_speed_xz_cheat
+		max_speed_y = self.p.max_speed_y_cheat
 		self.pbody:set_linear_damping(self.p.linear_damping_cheat)
 		self.pbody:set_vdamping(self.p.vdamping_cheat)
 	else
 		v_acc = self.p.vert_acceleration * delta
-		max_speed = self.p.max_speed
+		max_speed_xz = self.p.max_speed_xz
+		max_speed_y = self.p.max_speed_y
 		self.pbody:set_linear_damping(self.p.linear_damping)
 		self.pbody:set_vdamping(self.p.vdamping)
 	end
@@ -170,10 +177,16 @@ function comp.move(self, delta)
 
 	local vel = self.pbody:get_vel()
 	vel = vec3.add(vel, mov_vec)
-	len_sqr = vec3.length_sqr(vel)
-	if len_sqr > max_speed * max_speed then
-		local len = math.sqrt(len_sqr)
-		vel = vec3.mul(vel, max_speed / len)
+	speed_xz_sqr = vel[1] * vel[1] + vel[3] * vel[3]
+	if speed_xz_sqr > max_speed_xz * max_speed_xz then
+		local len = math.sqrt(speed_xz_sqr)
+		vel[1] = vel[1] * max_speed_xz / len
+		vel[3] = vel[3] * max_speed_xz / len
+	end
+	speed_y_sqr = vel[2] * vel[2]
+	if speed_y_sqr > max_speed_y * max_speed_y then
+		local len = math.sqrt(speed_y_sqr)
+		vel[2] = vel[2] * max_speed_y / len
 	end
 
 	self.pbody:set_vel(vel)
