@@ -6,7 +6,6 @@ local M = {}
 ---@param overriden table
 function M.new_param_initializer(params, SAVED_DATA, ARGS, overriden, default)
 	---@param name string
-	---@return any
 	function init_func(name)
 		local res = SAVED_DATA[name] or ARGS[name] or overriden[name] or default[name]
 		SAVED_DATA[name] = res

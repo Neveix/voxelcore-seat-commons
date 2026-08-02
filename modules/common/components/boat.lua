@@ -35,7 +35,10 @@ comp.default_params = {
 ---@param SAVED_DATA table
 ---@param ARGS table
 ---@param overriden_params table
+---@return boat_comp_params
 function M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	---@type boat_comp_params
+	---@diagnostic disable-next-line
 	local params = {}
 	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	piniter("gravity")
@@ -53,7 +56,6 @@ function M.calc_params(SAVED_DATA, ARGS, overriden_params)
 	piniter("water_splashes_number")
 	piniter("water_splashes_width")
 	piniter("inventory_size")
-	---@type string|nil
 	piniter("layout_id")
 	piniter("player_pos_shift")
 	return params
