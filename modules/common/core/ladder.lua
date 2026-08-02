@@ -24,16 +24,18 @@ function M.is_in_ladder_range(pl_pos, block_id)
 	local p = M.get_ladder_check_pos(pl_pos)
 	if block.get(p[1], p[2], p[3]) == block_id then
 		local rot = block.get_rotation(p[1], p[2], p[3])
-		return M.is_close_to_ladder(pl_pos[1], pl_pos[3], p[1], p[3], rot)
+		local res = M.is_close_to_ladder(pl_pos[1], pl_pos[3], p[1], p[3], rot)
+		return res
 	end
 	return false
 end
 
 function M.get_ladder_check_pos(pl_pos)
-	pl_pos[1] = math.floor(pl_pos[1])
-	pl_pos[2] = math.floor(pl_pos[2] + M.LADDER_CHECK_Y_SHIFT)
-	pl_pos[3] = math.floor(pl_pos[3])
-	return pl_pos
+	return {
+		math.floor(pl_pos[1]),
+		math.floor(pl_pos[2] + M.LADDER_CHECK_Y_SHIFT),
+		math.floor(pl_pos[3]),
+	}
 end
 
 function M.check_ladder(pid, ladder_tag, entity_name, component_name)
@@ -51,15 +53,6 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	local check_pos = M.get_ladder_check_pos(pl_pos)
 	local block_id = block.get(check_pos[1], check_pos[2], check_pos[3])
 	local block_str_id = block.name(block_id)
-	if block.has_tag(block_id, ladder_tag) then
-		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
-		if not M.is_close_to_ladder(px, pz, check_pos[1], check_pos[3], rot) then
-			return false
-		end
-	else
-		return false
-	end
-
 	local mount_entity = rideable_api.get_mount_entity(pid)
 	if mount_entity then
 		local ent = entities.get(mount_entity)
@@ -67,6 +60,15 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 		if comp == nil or comp.SAVED_DATA.block_str_id == block_str_id then
 			return false
 		end
+	end
+
+	if block.has_tag(block_id, ladder_tag) then
+		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
+		if not M.is_close_to_ladder(px, pz, check_pos[1], check_pos[3], rot) then
+			return false
+		end
+	else
+		return false
 	end
 
 	local sep_index = string.find(component_name, ":")
