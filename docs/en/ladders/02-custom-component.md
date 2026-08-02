@@ -7,14 +7,14 @@ Component's name is `ladder_dummy`
 After creating your custom component, add this to world.lua:
 ```lua
 ---@type ladder_core
-local ladder = require("seat_commons:api/v1/core/ladder")
+local ladder = require("intcom:api/v1/core/ladder")
 
 function on_player_tick(pid, _)
 	ladder.check_ladder(pid, "<pack_id>:<ladder_tag_name>", "<pack_id>:<ladder_entity_name>", "<pack_id>:<ladder_component_name>")
 end
 ```
 
-And create your new custom entity, like `ladder_dummy` of `SeatCommons`,
+And create your new custom entity, like `ladder_dummy` of `InteractiveCommons`,
 and give it your custom component:
 ```json
 {

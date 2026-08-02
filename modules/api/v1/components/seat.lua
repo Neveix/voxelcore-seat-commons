@@ -1,1 +1,1 @@
-return require("seat_commons:common/components/seat")
+return require("intcom:common/components/seat")

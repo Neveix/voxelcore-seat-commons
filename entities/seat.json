@@ -1,6 +1,6 @@
 {
   "components": [
-    "seat_commons:seat"
+    "intcom:seat"
   ],
   "hitbox": [
     0.01,

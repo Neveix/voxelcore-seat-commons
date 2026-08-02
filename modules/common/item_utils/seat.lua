@@ -14,8 +14,8 @@ end
 
 function M.sit_player(x, y, z, pid)
 	local rx, ry, rz = math.floor(x), math.floor(y), math.floor(z)
-	entities.spawn("seat_commons:seat", { x + 0.5, y, z + 0.5 }, {
-		["seat_commons__seat"] = {
+	entities.spawn("intcom:seat", { x + 0.5, y, z + 0.5 }, {
+		["intcom__seat"] = {
 			rider_id = pid,
 			block_str_id = block.name(block.get(rx, ry, rz)),
 		},

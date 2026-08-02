@@ -1,1 +1,1 @@
-return require("seat_commons:common/item_utils/boat")
+return require("intcom:common/item_utils/boat")

@@ -1,4 +1,4 @@
-# SeatCommons - Developer Documentation
+# InteractiveCommons - Developer Documentation
 
 **Engine version:** VoxelCore 0.31.4+
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-SeatCommons provides a framework for creating **mountable entities** in VoxelCore — 
+InteractiveCommons provides a framework for creating **mountable entities** in VoxelCore — 
 anything a player can sit on, ride, or climb.
 
 It handles:
@@ -28,7 +28,7 @@ it provides the building blocks for other packs to use.
 
 ## Setup
 
-To use SeatCommons in your content pack:
+To use InteractiveCommons in your content pack:
 
 1. Ensure [RideableAPI](https://github.com/Neveix/voxelcore-rideable-api)
    is installed and loaded.
@@ -39,7 +39,7 @@ To use SeatCommons in your content pack:
 
 ## API Versioning
 
-SeatCommons uses API versioning to ensure backward compatibility.
+InteractiveCommons uses API versioning to ensure backward compatibility.
 
 All requires include the API version in the path.
 

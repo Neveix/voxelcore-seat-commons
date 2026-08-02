@@ -65,7 +65,7 @@ function M.get_entity_overriden(comp, component_name)
 	local success, defaults = pcall(function()
 		return require(
 			string.sub(ename, 1, sep_index)
-				.. "seat_commons/"
+				.. "intcom/"
 				.. component_name
 				.. "/"
 				.. string.sub(ename, sep_index + 1)
@@ -94,7 +94,7 @@ function M.get_block_overriden(comp, component_name)
 	local sep_index = string.find(bid, ":")
 
 	local import_path = string.sub(bid, 1, sep_index)
-		.. "seat_commons/"
+		.. "intcom/"
 		.. component_name
 		.. "/"
 		.. string.sub(bid, sep_index + 1)

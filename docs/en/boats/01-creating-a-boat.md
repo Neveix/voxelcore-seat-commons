@@ -1,6 +1,6 @@
 # 01. Creating a Standard Boat
 
-To add a boat to your content pack, you need to add the `seat_commons:boat` component 
+To add a boat to your content pack, you need to add the `intcom:boat` component 
 to your entity definition.
 
 See the [Creating an Entity Guide](../common/creating-an-entity.md) for a general explanation of overrides.
@@ -14,7 +14,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 ```json
 {
   "components": [
-    "seat_commons:boat"
+    "intcom:boat"
   ],
   "body-type": "dynamic",
   "hitbox": [
@@ -28,7 +28,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 }
 ```
 
-The `seat_commons:boat` component provides:
+The `intcom:boat` component provides:
 - Physics and buoyancy
 - Player mounting (via RideableAPI)
 - Movement controls (WASD)
@@ -40,12 +40,12 @@ The `seat_commons:boat` component provides:
 To customize a boat, create a module file:
 
 ```
-modules/seat_commons/boat/<your_boat_name>.lua
+modules/intcom/boat/<your_boat_name>.lua
 ```
 
 ### Overriding Parameters
 
-**Example `modules/seat_commons/boat/my_boat.lua`:**
+**Example `modules/intcom/boat/my_boat.lua`:**
 
 ```lua
 return {
@@ -104,7 +104,7 @@ return C.init
 | `on_update(self, tps)` | Called every tick |
 | `on_render(self, delta)` | Called every frame (for visual updates) |
 
-For reference implementations, see `seat_commons:modules/api/v1/components/boat.lua`.
+For reference implementations, see `intcom:modules/api/v1/components/boat.lua`.
 
 ---
 

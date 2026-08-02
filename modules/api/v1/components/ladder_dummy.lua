@@ -1,1 +1,1 @@
-return require("seat_commons:common/components/ladder_dummy")
+return require("intcom:common/components/ladder_dummy")

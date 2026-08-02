@@ -1,7 +1,7 @@
 ---@type rideable_api
 local rideable_api = require("rideable_api:api/v1/mount")
-require("seat_commons:common/utils")
-local common_comp = require("seat_commons:common/components/common")
+require("intcom:common/utils")
+local common_comp = require("intcom:common/components/common")
 
 local M = {}
 
@@ -117,7 +117,7 @@ function comp.check_unmount(self)
 end
 
 function comp.get_tag_name(_)
-	return "seat_commons:seat"
+	return "intcom:seat"
 end
 
 function comp.check_destroyed(self)

@@ -1,6 +1,6 @@
 # 01. Creating a Chair
 
-To add a seat to your content pack, you need to add the `seat_commons:seat` tag
+To add a seat to your content pack, you need to add the `intcom:seat` tag
 to your block definition and create a small script.
 
 See the [Creating an Entity Guide](../common/creating-an-entity.md) for a general explanation of overrides.
@@ -31,7 +31,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
     0.75
   ],
   "tags": [
-    "seat_commons:seat"
+    "intcom:seat"
   ]
 }
 ```
@@ -41,7 +41,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 | Field | Value | Description |
 | :--- | :--- | :--- |
 | `script-name` | `<your_script_name>` | Name of the Lua script file |
-| `tags` | `["seat_commons:seat"]` | Required to identify this block as a seat |
+| `tags` | `["intcom:seat"]` | Required to identify this block as a seat |
 
 ---
 
@@ -51,7 +51,7 @@ Create `scripts/<your_script_name>.lua`:
 
 ```lua
 ---@type seat_item_utils
-local seat_item_utils = require("seat_commons:api/v1/item_utils/seat")
+local seat_item_utils = require("intcom:api/v1/item_utils/seat")
 
 function on_interact(x, y, z, pid)
     return seat_item_utils.try_sit_player(x, y, z, pid)
@@ -70,12 +70,12 @@ The `try_sit_player()` function handles all mounting logic:
 To customize a chair's behavior, create a module file:
 
 ```
-modules/seat_commons/seat/<your_block_name>.lua
+modules/intcom/seat/<your_block_name>.lua
 ```
 
 ### Overriding Parameters
 
-**Example `modules/seat_commons/seat/chair.lua`:**
+**Example `modules/intcom/seat/chair.lua`:**
 
 ```lua
 return {
@@ -125,7 +125,7 @@ return C.init
 | `get_tag_name(self)` | Returns the tag used to identify the seat |
 | `on_update(self, tps)` | Called every tick |
 
-For reference implementations, see `seat_commons:modules/api/v1/components/seat.lua`.
+For reference implementations, see `intcom:modules/api/v1/components/seat.lua`.
 
 ---
 

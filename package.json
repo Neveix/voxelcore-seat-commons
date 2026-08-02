@@ -1,6 +1,6 @@
 {
-  "id": "seat_commons",
-  "title": "Seat Commons",
+  "id": "intcom",
+  "title": "Interactive Commons",
   "version": "1.0.0",
   "creator": "Neveix",
   "description": "Common utilities for making vehicles, seats, ladders",

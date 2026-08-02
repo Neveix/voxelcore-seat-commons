@@ -1,6 +1,6 @@
 {
   "components": [
-    "seat_commons:ladder_dummy"
+    "intcom:ladder_dummy"
   ],
   "hitbox": [
     0.001,

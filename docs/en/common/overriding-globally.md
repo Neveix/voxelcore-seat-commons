@@ -28,7 +28,7 @@ This is useful when you want to:
 Create `scripts/world.lua` in your content pack:
 
 ```lua
-local boat_comp = require("seat_commons:api/v1/components/boat")
+local boat_comp = require("intcom:api/v1/components/boat")
 local comp = boat_comp.comp
 
 function on_world_open()

@@ -1,6 +1,6 @@
 # 01. Creating a Ladder
 
-To add a ladder to your content pack, you need to add the `seat_commons:ladder` tag
+To add a ladder to your content pack, you need to add the `intcom:ladder` tag
 to your block definition.
 
 See the [Creating an Entity Guide](../common/creating-an-entity.md) for a general explanation of overrides.
@@ -29,7 +29,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
   "solid": false,
   "light-passing": true,
   "tags": [
-    "seat_commons:ladder"
+    "intcom:ladder"
   ]
 }
 ```
@@ -38,7 +38,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 
 | Field | Value | Description |
 | :--- | :--- | :--- |
-| `tags` | `["seat_commons:ladder"]` | Required to identify this block as a ladder |
+| `tags` | `["intcom:ladder"]` | Required to identify this block as a ladder |
 
 ---
 
@@ -47,7 +47,7 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 To customize a ladder's behavior, create a module file in your content pack:
 
 ```
-modules/seat_commons/ladder/<your_ladder_name>.lua
+modules/intcom/ladder/<your_ladder_name>.lua
 ```
 
 The `<your_ladder_name>` should match the name used in your block definition.
@@ -56,7 +56,7 @@ The `<your_ladder_name>` should match the name used in your block definition.
 
 ### Overriding Parameters
 
-**Example `modules/seat_commons/ladder/ladder.lua`:**
+**Example `modules/intcom/ladder/ladder.lua`:**
 
 ```lua
 return {
@@ -117,7 +117,7 @@ return C.init
 | `init_step_sounds(self, delta)` | Called in on_spawn. |
 | `play_step_sounds(self, delta)` | Called in on_update to play step sounds |
 
-For reference implementations, see `seat_commons:modules/api/v1/components/ladder.lua`.
+For reference implementations, see `intcom:modules/api/v1/components/ladder.lua`.
 
 ---
 

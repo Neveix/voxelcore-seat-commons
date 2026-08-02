@@ -1,1 +1,1 @@
-return require("seat_commons:common/core/ladder")
+return require("intcom:common/core/ladder")

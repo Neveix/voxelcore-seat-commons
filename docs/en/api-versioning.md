@@ -1,12 +1,12 @@
 # API Versioning
 
-SeatCommons uses API versioning to ensure backward compatibility across updates.
+InteractiveCommons uses API versioning to ensure backward compatibility across updates.
 
 ---
 
 ## Why Versioning?
 
-As SeatCommons evolves, new features are added and existing APIs may change.
+As InteractiveCommons evolves, new features are added and existing APIs may change.
 Versioning allows content packs to continue using older APIs while optionally
 migrating to newer versions.
 
@@ -16,7 +16,7 @@ migrating to newer versions.
 
 All requires include the API version in the path, for example:
 ```lua
-require("seat_commons:api/v1/components/boat")
+require("intcom:api/v1/components/boat")
 ```
 
 ## Compatibility Guarantee

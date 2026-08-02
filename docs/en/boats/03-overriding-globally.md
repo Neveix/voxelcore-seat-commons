@@ -2,7 +2,7 @@
 
 ## General Mechanism
 
-The same approach applies to all entity types in SeatCommons.
+The same approach applies to all entity types in InteractiveCommons.
 See the [Global Override Guide](../common/overriding-globally.md) for a general explanation.
 
 ---

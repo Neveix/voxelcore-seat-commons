@@ -1,4 +1,4 @@
-local comp = require("seat_commons:api/v1/components/seat")
+local comp = require("intcom:api/v1/components/seat")
 local self = comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()

@@ -1,6 +1,6 @@
 # Creating an Entity
 
-This guide covers the general approach for creating any entity type in SeatCommons.
+This guide covers the general approach for creating any entity type in InteractiveCommons.
 
 ---
 
@@ -9,7 +9,7 @@ This guide covers the general approach for creating any entity type in SeatCommo
 To customize behavior, create a module file in your content pack:
 
 ```
-modules/seat_commons/<entity_type>/<your_name>.lua
+modules/intcom/<entity_type>/<your_name>.lua
 ```
 
 The `<your_name>` should match the name used in your entity definition.

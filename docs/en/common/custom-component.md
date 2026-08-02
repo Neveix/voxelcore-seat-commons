@@ -1,7 +1,7 @@
 # Creating a Custom Component
 
 If you need custom behavior for a whole class of entities in your content pack,
-you can create your own component based on the default SeatCommons implementation.
+you can create your own component based on the default InteractiveCommons implementation.
 
 This is useful when you want other developers to be able to use your enhanced component.
 
@@ -18,7 +18,7 @@ scripts/components/<your_component_name>.lua
 **Example:**
 
 ```lua
-local comp = require("seat_commons:api/v1/components/<entity_type>")
+local comp = require("intcom:api/v1/components/<entity_type>")
 local self = comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()
@@ -51,7 +51,7 @@ end
 
 Or use full version of it:
 ```lua
-local comp = require("seat_commons:api/v1/components/<entity_type>")
+local comp = require("intcom:api/v1/components/<entity_type>")
 local self = comp.new(entity, SAVED_DATA, ARGS)
 
 self:on_spawn()
@@ -136,5 +136,5 @@ In your entity definition, reference your custom component instead of the defaul
 
 | Approach | When to use |
 | :--- | :--- |
-| **Simple Overrides** (`modules/seat_commons/<entity_type>/`) | You want to change behavior for a **specific entity type** in your pack |
+| **Simple Overrides** (`modules/intcom/<entity_type>/`) | You want to change behavior for a **specific entity type** in your pack |
 | **Custom Component** (`scripts/components/`) | You want to create a **new reusable component** that others can use |
