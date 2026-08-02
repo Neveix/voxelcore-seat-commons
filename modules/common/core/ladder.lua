@@ -20,22 +20,73 @@ function M.is_close_to_ladder(x, z, rx, rz, rot)
 	end
 end
 
-function M.is_in_ladder_range(pl_pos, block_id)
-	local p = M.get_ladder_check_pos(pl_pos)
-	if block.get(p[1], p[2], p[3]) == block_id then
-		local rot = block.get_rotation(p[1], p[2], p[3])
-		local res = M.is_close_to_ladder(pl_pos[1], pl_pos[3], p[1], p[3], rot)
-		return res
-	end
-	return false
-end
-
 function M.get_ladder_check_pos(pl_pos)
 	return {
 		math.floor(pl_pos[1]),
 		math.floor(pl_pos[2] + M.LADDER_CHECK_Y_SHIFT),
 		math.floor(pl_pos[3]),
 	}
+end
+
+function M.is_in_ladder_range(pl_pos, block_id, check_pos, ladder_tag)
+	if not block.has_tag(block_id, ladder_tag) then
+		return false
+	end
+	check_pos = check_pos or M.get_ladder_check_pos(pl_pos)
+	if block.get(check_pos[1], check_pos[2], check_pos[3]) == block_id then
+		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
+		local res = M.is_close_to_ladder(pl_pos[1], pl_pos[3], check_pos[1], check_pos[3], rot)
+		return res
+	end
+	return false
+end
+
+local function get_double_sided_blocks_to_check(pl_pos, check_pos)
+	---@type table<integer, {pos:vec3, rot:integer}>
+	local blocks_to_check = {}
+	if pl_pos[1] >= check_pos[1] + 0.5 then
+		blocks_to_check[#blocks_to_check + 1] = {
+			pos = vec3.add(check_pos, { 1, 0, 0 }),
+			rot = 1,
+		}
+	else
+		blocks_to_check[#blocks_to_check + 1] = {
+			pos = vec3.add(check_pos, { -1, 0, 0 }),
+			rot = 3,
+		}
+	end
+
+	if pl_pos[3] >= check_pos[3] + 0.5 then
+		blocks_to_check[#blocks_to_check + 1] = {
+			pos = vec3.add(check_pos, { 0, 0, 1 }),
+			rot = 0,
+		}
+	else
+		blocks_to_check[#blocks_to_check + 1] = {
+			pos = vec3.add(check_pos, { 0, 0, -1 }),
+			rot = 2,
+		}
+	end
+	return blocks_to_check
+end
+
+function M.is_in_double_sided_ladder_range(pl_pos, check_pos, ladder_tag)
+	check_pos = check_pos or M.get_ladder_check_pos(pl_pos)
+	local blocks_to_check = get_double_sided_blocks_to_check(pl_pos, check_pos)
+	local block_id, bx, by, bz
+	for _, block_to_check in ipairs(blocks_to_check) do
+		bx, by, bz = unpack(block_to_check.pos)
+		block_id = block.get(bx, by, bz)
+		if block.has_tag(block_id, "intcom:double_sided_ladder") and block.has_tag(block_id, ladder_tag) then
+			local rot = block.get_rotation(bx, by, bz)
+			if rot == block_to_check.rot then
+				if M.is_close_to_ladder(pl_pos[1], pl_pos[3], check_pos[1], check_pos[3], (rot + 2) % 4) then
+					return block_to_check
+				end
+			end
+		end
+	end
+	return nil
 end
 
 function M.check_ladder(pid, ladder_tag, entity_name, component_name)
@@ -53,6 +104,20 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 	local check_pos = M.get_ladder_check_pos(pl_pos)
 	local block_id = block.get(check_pos[1], check_pos[2], check_pos[3])
 	local block_str_id = block.name(block_id)
+
+	local is_in_ladder_range = M.is_in_ladder_range(pl_pos, block_id, check_pos, ladder_tag)
+	local is_in_double_sided_ladder_range = M.is_in_double_sided_ladder_range(pl_pos, check_pos, ladder_tag)
+
+	if not is_in_ladder_range then
+		if is_in_double_sided_ladder_range then
+			local d = is_in_double_sided_ladder_range
+			block_id = block.get(unpack(d.pos))
+			block_str_id = block.name(block_id)
+		else
+			return false
+		end
+	end
+
 	local mount_entity = rideable_api.get_mount_entity(pid)
 	if mount_entity then
 		local ent = entities.get(mount_entity)
@@ -60,15 +125,6 @@ function M.check_ladder(pid, ladder_tag, entity_name, component_name)
 		if comp == nil or comp.SAVED_DATA.block_str_id == block_str_id then
 			return false
 		end
-	end
-
-	if block.has_tag(block_id, ladder_tag) then
-		local rot = block.get_rotation(check_pos[1], check_pos[2], check_pos[3])
-		if not M.is_close_to_ladder(px, pz, check_pos[1], check_pos[3], rot) then
-			return false
-		end
-	else
-		return false
 	end
 
 	local sep_index = string.find(component_name, ":")

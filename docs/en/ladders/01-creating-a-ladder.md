@@ -125,12 +125,14 @@ For reference implementations, see `intcom:modules/api/v1/components/ladder.lua`
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `max_speed` | `number` | `4` | Maximum climbing speed (normal mode) |
-| `max_speed_cheat` | `number` | `40` | Maximum climbing speed (cheat/fast mode) |
-| `linear_damping` | `number` | `15` | Damping applied to horizontal movement while on ladder |
-| `linear_damping_cheat` | `number` | `1` | Horizontal damping in cheat/fast mode |
-| `vdamping` | `number` | `0.7` | Vertical damping while climbing |
+| `max_speed_xz` | `number` | `1.5` | Maximum horizontal climbing speed (normal mode) |
+| `max_speed_xz_cheat` | `number` | `50` | Maximum horizontal climbing speed (cheat/fast mode) |
+| `max_speed_y` | `number` | `2` | Maximum vertical climbing speed (normal mode) |
+| `max_speed_y_cheat` | `number` | `80` | Maximum vertical climbing speed (cheat/fast mode) |
+| `linear_damping` | `number` | `10` | Damping applied to horizontal movement while on ladder |
+| `linear_damping_cheat` | `number` | `2` | Horizontal damping in cheat/fast mode |
+| `vdamping` | `number` | `0.5` | Vertical damping while climbing |
 | `vdamping_cheat` | `number` | `0.2` | Vertical damping in cheat/fast mode |
-| `vert_acceleration` | `number` | `20` | Vertical acceleration while climbing |
+| `vert_acceleration` | `number` | `10` | Vertical acceleration while climbing |
 | `vert_acceleration_cheat` | `number` | `100` | Vertical acceleration in cheat/fast mode |
 | `gravity` | `number` | `0` | Gravity applied to the player while on ladder (0 = no gravity) |

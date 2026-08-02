@@ -204,7 +204,11 @@ function comp.check_unmount(self)
 	end
 
 	local x, y, z = player.get_pos(self.saved_data.rider_id)
-	if not ladder.is_in_ladder_range({ x, y, z }, self.saved_data.block_id) then
+	local pl_pos = { x, y, z }
+	if
+		not ladder.is_in_ladder_range(pl_pos, self.saved_data.block_id, nil, self.saved_data.block_tag)
+		and not ladder.is_in_double_sided_ladder_range(pl_pos, nil, self.saved_data.block_tag)
+	then
 		self:player_start_unmount()
 		return
 	end
