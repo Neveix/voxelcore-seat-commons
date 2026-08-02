@@ -32,35 +32,6 @@ comp.default_params = {
 	player_pos_shift = { 0, 0.8, 0 },
 }
 
----@param SAVED_DATA table
----@param ARGS table
----@param overriden_params table
----@return boat_comp_params
-function M.calc_params(SAVED_DATA, ARGS, overriden_params)
-	---@type boat_comp_params
-	---@diagnostic disable-next-line
-	local params = {}
-	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
-	piniter("gravity")
-	piniter("max_speed")
-	piniter("rotation_acceleration")
-	piniter("rotation_deceleration")
-	piniter("max_rotation_speed")
-	piniter("max_ground_rotation_speed")
-	piniter("turn_velocity_dependency")
-	piniter("roll_speed")
-	piniter("max_roll")
-	piniter("roll_lift")
-	piniter("bottom_y_shift")
-	piniter("acceleration")
-	piniter("water_splashes_number")
-	piniter("water_splashes_width")
-	piniter("inventory_size")
-	piniter("layout_id")
-	piniter("player_pos_shift")
-	return params
-end
-
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
@@ -70,7 +41,7 @@ function M.new(entity, SAVED_DATA, ARGS)
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
 	local overridden_funcs, overriden_params = common_comp.get_entity_overriden(new_comp, component_name)
 	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
-	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	new_comp.p = common_comp.calc_params(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	common_comp.create_dummies(new_comp)
 	return new_comp
 end

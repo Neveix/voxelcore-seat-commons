@@ -1,17 +1,23 @@
+---@type common_component_utils
+---@diagnostic disable-next-line
 local M = {}
 
----@param params table
----@param SAVED_DATA table
----@param ARGS table
----@param overriden table
-function M.new_param_initializer(params, SAVED_DATA, ARGS, overriden, default)
-	---@param name string
+function M.new_param_initializer(dest, SAVED_DATA, ARGS, overriden, default)
 	function init_func(name)
 		local res = SAVED_DATA[name] or ARGS[name] or overriden[name] or default[name]
 		SAVED_DATA[name] = res
-		params[name] = res
+		dest[name] = res
 	end
 	return init_func
+end
+
+function M.calc_params(SAVED_DATA, ARGS, overriden_params, default_params)
+	local params = {}
+	local piniter = M.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, default_params)
+	for name, _ in pairs(default_params) do
+		piniter(name)
+	end
+	return params
 end
 
 M.DUMMY_FUNCTIONS_NAMES = {
@@ -31,7 +37,6 @@ M.DUMMY_FUNCTIONS_NAMES = {
 	"on_player_set",
 }
 
----@param comp comp
 function M.create_dummies(comp)
 	for _, fname in ipairs(M.DUMMY_FUNCTIONS_NAMES) do
 		if comp[fname] == nil then
@@ -40,10 +45,6 @@ function M.create_dummies(comp)
 	end
 end
 
----@param comp comp
----@param SAVED_DATA table
----@param ARGS table
----@param defaults table
 function M.override_functions(comp, SAVED_DATA, ARGS, defaults)
 	for k, v in pairs(defaults) do
 		if k ~= "init" and type(v) == "function" then
@@ -55,9 +56,6 @@ function M.override_functions(comp, SAVED_DATA, ARGS, defaults)
 	end
 end
 
----@param comp comp
----@param component_name string
----@return table functions, table params
 function M.get_entity_overriden(comp, component_name)
 	local ename = comp.entity:def_name()
 	local sep_index = string.find(ename, ":")
@@ -79,8 +77,6 @@ function M.get_entity_overriden(comp, component_name)
 	return {}, {}
 end
 
----@param comp comp
----@return table functions, table params
 function M.get_block_overriden(comp, component_name)
 	local bid = comp.saved_data.block_str_id
 	if bid == nil then
@@ -109,11 +105,6 @@ function M.get_block_overriden(comp, component_name)
 	return {}, {}
 end
 
----@param entity voxelcore.class.entity
----@param SAVED_DATA table
----@param ARGS table
----@param base_comp table
----@return table
 function M.new(entity, SAVED_DATA, ARGS, base_comp)
 	local comp = table.copy(base_comp)
 	comp.entity = entity

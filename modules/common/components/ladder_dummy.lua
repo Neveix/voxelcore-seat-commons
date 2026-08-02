@@ -27,31 +27,6 @@ comp.default_params = {
 	gravity = 0,
 }
 
----@param SAVED_DATA table
----@param ARGS table
----@param overriden_params table
-function M.calc_params(SAVED_DATA, ARGS, overriden_params)
-	local params = {}
-	local piniter = common_comp.new_param_initializer(params, SAVED_DATA, ARGS, overriden_params, comp.default_params)
-	piniter("max_speed_xz")
-	piniter("max_speed_xz_cheat")
-
-	piniter("max_speed_y")
-	piniter("max_speed_y_cheat")
-
-	piniter("linear_damping")
-	piniter("linear_damping_cheat")
-
-	piniter("vdamping")
-	piniter("vdamping_cheat")
-
-	piniter("vert_acceleration")
-	piniter("vert_acceleration_cheat")
-
-	piniter("gravity")
-	return params
-end
-
 ---@param entity voxelcore.class.entity
 ---@param SAVED_DATA table
 ---@param ARGS table
@@ -61,7 +36,7 @@ function M.new(entity, SAVED_DATA, ARGS)
 	local new_comp = common_comp.new(entity, SAVED_DATA, ARGS, comp, component_name)
 	local overridden_funcs, overriden_params = common_comp.get_block_overriden(new_comp, component_name)
 	common_comp.override_functions(new_comp, SAVED_DATA, ARGS, overridden_funcs)
-	new_comp.p = M.calc_params(SAVED_DATA, ARGS, overriden_params)
+	new_comp.p = common_comp.calc_params(SAVED_DATA, ARGS, overriden_params, comp.default_params)
 	common_comp.create_dummies(new_comp)
 	return new_comp
 end

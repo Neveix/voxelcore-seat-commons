@@ -1,5 +1,15 @@
 ---@meta
 
+---@class common_component_utils
+---@field new_param_initializer fun(dest: comp_params, SAVED_DATA: table, ARGS: table, overriden: comp_params, default: comp_params): fun (name: string): nil
+---@field calc_params fun(SAVED_DATA: table, ARGS: table, overriden_params: comp_params, default_params: comp_params): comp_params
+---@field DUMMY_FUNCTIONS_NAMES table<str, str>
+---@field create_dummies fun(comp: comp): nil
+---@field override_functions fun(comp: comp, SAVED_DATA: table, ARGS: table, defaults: table): nil
+---@field get_entity_overriden fun(comp: comp, component_name: string): table, table -- returns functions, params
+---@field get_block_overriden fun(comp: comp, component_name: string): table, table -- returns functions, params
+---@field new fun(entity: voxelcore.class.entity, SAVED_DATA: table, ARGS: table, base_comp: table): comp
+
 ---@class comp_params
 
 ---@class boat_comp_params : comp_params
