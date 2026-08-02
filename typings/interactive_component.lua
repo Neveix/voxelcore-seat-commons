@@ -27,8 +27,10 @@
 ---@field player_pos_shift_after_unmount vec3
 
 ---@class ladder_comp_params: comp_params
----@field	max_speed number
----@field	max_speed_cheat number
+---@field	max_speed_xz number
+---@field	max_speed_xz_cheat number
+---@field	max_speed_y number
+---@field	max_speed_y_cheat number
 ---@field	linear_damping number
 ---@field	linear_damping_cheat number
 ---@field	vdamping number
