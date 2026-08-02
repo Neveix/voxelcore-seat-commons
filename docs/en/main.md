@@ -6,7 +6,7 @@
 
 ## Overview
 
-InteractiveCommons provides a framework for creating **mountable entities** in VoxelCore — 
+InteractiveCommons provides a framework for creating **interactive entities and blocks** in VoxelCore — 
 anything a player can sit on, ride, or climb.
 
 It handles:
@@ -17,9 +17,9 @@ It handles:
 - Interaction handling (on_used, on_attacked, etc.)
 
 The framework is built around **presets** — ready-to-use implementations for:
-- Boats (water vehicles)
-- Chairs (sittable furniture)
-- Ladders (climbable structures)
+- Boats
+- Furniture
+- Ladders
 
 This is a library pack. It does not add content by itself — 
 it provides the building blocks for other packs to use.
@@ -30,9 +30,7 @@ it provides the building blocks for other packs to use.
 
 To use InteractiveCommons in your content pack:
 
-1. Ensure [RideableAPI](https://github.com/Neveix/voxelcore-rideable-api)
-   is installed and loaded.
-2. **Optionally** Copy the `typings/local` folder to your project (for type annotations).
+- Ensure [RideableAPI](https://github.com/Neveix/voxelcore-rideable-api) is installed and loaded.
 
 
 ---

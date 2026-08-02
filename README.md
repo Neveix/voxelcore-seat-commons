@@ -6,7 +6,7 @@ A content pack for [VoxelCore](https://github.com/MihailRis/voxelcore)
 
 ## Description
 
-InteractiveCommons provides a collection of ready-to-use presets for **mountable entities** in VoxelCore.
+InteractiveCommons provides a collection of ready-to-use presets for **interactive entities or blocks** in VoxelCore.
 
 Includes presets for:
 
@@ -34,10 +34,7 @@ Other content packs use these presets to add rideable or climbable content.
 ## For Players
 
 This pack adds no visible items or mechanics on its own.
-It is a library that other content packs use to add rideable, climbable, or sittable entities.
-
-If a content pack requires InteractiveCommons, it will list it as a dependency.
-Simply install it and other packs will handle the rest.
+It is a library that other content packs use to add interactive entities or blocks.
 
 ---
 

@@ -24,4 +24,9 @@ and give it your custom component:
 }
 ```
 
-[Available Functions](./01-creating-a-ladder.md#available-functions-for-override)
+---
+
+## Links
+
+- [Available Functions](./01-creating-a-ladder.md#available-functions-for-override)
+- [Available Parameters](./01-creating-a-ladder.md#available-parameters)

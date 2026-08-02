@@ -25,3 +25,7 @@ require("intcom:api/v1/components/boat")
 - Content packs using `v1` will not break when newer versions are released.
 - Bug fixes may be backported to `v1` when critical.
 - New features are added to the latest version only.
+
+## The Most Recent Version
+
+At the time of the last update, this is version v1

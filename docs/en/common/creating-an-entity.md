@@ -12,6 +12,8 @@ To customize behavior, create a module file in your content pack:
 modules/intcom/<entity_type>/<your_name>.lua
 ```
 
+The <entity_type> is one of the: ["boat", "seat", "ladder"]
+
 The `<your_name>` should match the name used in your entity definition.
 
 There are two types of overrides:
@@ -69,6 +71,7 @@ C.params = {
 return C.init
 ```
 
+
 ### How it works
 
 - The initializer receives a `super` table containing the default implementation.
@@ -86,3 +89,6 @@ C.super_funcs = {
 
 > ⚠️ **Warning:** Do **not** call `C.super.on_used(self, pid)` directly inside the overridden function,
 > as this will cause **infinite recursion**. Store the reference separately as shown above.
+
+
+- Note: all the functions that contains in `C` (component) table, will be used for overriding.

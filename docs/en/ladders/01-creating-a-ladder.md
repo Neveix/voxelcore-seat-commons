@@ -42,7 +42,22 @@ See the [Creating an Entity Guide](../common/creating-an-entity.md) for a genera
 
 ---
 
+
 ## Customization
+
+### Double Sided Ladder
+
+Simply add a tag to tags field of your ladder:
+```json
+{
+  "tags": [
+    "intcom:ladder",
+    "intcom:double_sided_ladder"
+  ]
+}
+```
+
+### Deeper Customization
 
 To customize a ladder's behavior, create a module file in your content pack:
 
