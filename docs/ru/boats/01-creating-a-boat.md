@@ -90,7 +90,7 @@ return C.init
 | `on_spawn(self)` | Вызывается при появлении лодки |
 | `on_save(self)` | Вызывается при сохранении лодки |
 | `on_despawn(self)` | Вызывается при уничтожении лодки |
-| `on_attacked(self, entity_id, pid)` | Вызывается при атаке на лодку |
+| `on_attacked(self, entity_id, pid)` | Вызывается при атаке лодки |
 | `player_unmount(self)` | Вызывается при выходе игрока из лодки |
 | `player_mount(self, pid)` | Вызывается при посадке игрока в лодку |
 | `open_inventory(self)` | Открывает инвентарь лодки |
@@ -104,7 +104,7 @@ return C.init
 | `on_update(self, tps)` | Вызывается каждый тик |
 | `on_render(self, delta)` | Вызывается каждый кадр (для визуальных обновлений) |
 
-Для эталонных реализаций см. `intcom:modules/api/v1/components/boat.lua`.
+Для проверки реализаций см. `intcom:modules/api/v1/components/boat.lua`.
 
 ---
 

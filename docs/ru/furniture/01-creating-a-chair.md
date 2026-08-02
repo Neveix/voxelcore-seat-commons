@@ -125,7 +125,7 @@ return C.init
 | `get_tag_name(self)` | Возвращает тег, используемый для идентификации сиденья |
 | `on_update(self, tps)` | Вызывается каждый тик |
 
-Примеры реализации см. в `intcom:modules/api/v1/components/seat.lua`.
+Реализации см. в `intcom:modules/api/v1/components/seat.lua`.
 
 ---
 

@@ -132,7 +132,7 @@ return C.init
 | `init_step_sounds(self, delta)` | Вызывается в on_spawn. |
 | `play_step_sounds(self, delta)` | Вызывается в on_update для воспроизведения звуков шагов |
 
-Для справочных реализаций смотрите `intcom:modules/api/v1/components/ladder.lua`.
+Реализации смотрите `intcom:modules/api/v1/components/ladder.lua`.
 
 ---
 
