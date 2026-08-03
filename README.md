@@ -22,9 +22,6 @@ All presets are built on:
 - [RideableAPI](https://github.com/Neveix/rideable-api) — for mounting logic
 - A pluggable component system — for easy customization or overriding
 
-This is a library pack. It does not add any items or blocks to your game by itself.
-Other content packs use these presets to add rideable or climbable content.
-
 ---
 
 ## Installation

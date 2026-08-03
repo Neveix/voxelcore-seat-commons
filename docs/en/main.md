@@ -21,9 +21,6 @@ The framework is built around **presets** — ready-to-use implementations for:
 - Furniture
 - Ladders
 
-This is a library pack. It does not add content by itself — 
-it provides the building blocks for other packs to use.
-
 ---
 
 ## Setup
