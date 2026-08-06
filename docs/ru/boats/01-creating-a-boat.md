@@ -127,5 +127,5 @@ return C.init
 | `water_splashes_number` | `integer` | `4` | Количество частиц брызг воды |
 | `water_splashes_width` | `number` | `1` | Ширина эффекта брызг воды |
 | `inventory_size` | `integer` | `0` | Размер инвентаря (0 = нет инвентаря) |
-| `layout_id` | `string or nil` | `nil` | ID макета инвентаря |
+| `layout_id` | `string` | `""` | ID макета инвентаря |
 | `player_pos_shift` | `vec3` | `{0, 0.8, 0}` | Смещение всадника относительно центра сущности |

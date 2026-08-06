@@ -28,7 +28,7 @@ comp.default_params = {
 	water_splashes_number = 4,
 	water_splashes_width = 1,
 	inventory_size = 0,
-	layout_id = nil,
+	layout_id = "",
 	player_pos_shift = { 0, 0.8, 0 },
 }
 

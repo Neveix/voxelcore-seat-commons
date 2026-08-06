@@ -127,5 +127,5 @@ For reference implementations, see `intcom:modules/api/v1/components/boat.lua`.
 | `water_splashes_number` | `integer` | `4` | Number of water splash particles |
 | `water_splashes_width` | `number` | `1` | Width of water splash effect |
 | `inventory_size` | `integer` | `0` | Inventory size (0 = no inventory) |
-| `layout_id` | `string or nil` | `nil` | Inventory layout ID |
+| `layout_id` | `string` | `""` | Inventory layout ID |
 | `player_pos_shift` | `vec3` | `{0, 0.8, 0}` | Offset of the rider relative to entity center |

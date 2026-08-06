@@ -28,7 +28,7 @@
 ---@field water_splashes_number integer
 ---@field water_splashes_width number
 ---@field inventory_size integer
----@field layout_id string|nil
+---@field layout_id string
 ---@field player_pos_shift vec3
 
 ---@class seat_comp_params: comp_params
